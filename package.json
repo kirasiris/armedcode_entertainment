@@ -1,0 +1,60 @@
+{
+  "name": "armedcode_entertainment",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "rebuild": "rimraf .next && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirasiris/armedcode_entertainment.git"
+  },
+  "keywords": [
+    "javascript",
+    "portfolio",
+    "business",
+    "reactjs",
+    "nextjs",
+    "weapons",
+    "llc",
+    "2a",
+    "arms",
+    "limited-liability-companies",
+    "second-amendment",
+    "right-to-bear-arms"
+  ],
+  "author": "Kevin Uriel Fonseca",
+  "license": "MIT",
+  "bugs": {
+    "email": "kebin1421@hotmail.com",
+    "url": "https://github.com/kirasiris/armedcode_entertainment/issues"
+  },
+  "homepage": "https://github.com/kirasiris/armedcode_entertainment#readme",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "^15.4.6"
+  },
+  "dependencies": {
+    "@stripe/stripe-js": "^7.8.0",
+    "axios": "^1.11.0",
+    "base-64": "^1.0.0",
+    "befree-utilities": "^1.0.4",
+    "bootstrap": "^5.3.7",
+    "he": "^1.2.0",
+    "lodash": "^4.17.21",
+    "next": "^15.4.6",
+    "next-client-cookies": "^2.1.0",
+    "react": "^19.1.1",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.1.1",
+    "react-loading-skeleton": "^3.5.0",
+    "react-toastify": "^11.0.5",
+    "rss": "^1.2.2",
+    "showdown": "^2.1.0"
+  }
+}
