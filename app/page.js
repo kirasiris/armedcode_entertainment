@@ -1,13 +1,49 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { fetchurl } from "@/helpers/fetchurl";
 import Head from "@/app/head";
 import ErrorPage from "@/layout/errorpage";
-import Services from "@/components/services";
-import ServiceForm from "@/forms/services/serviceemailform";
+import Link from "next/link";
+import Image from "next/image";
+import ParseHtml from "@/layout/parseHtml";
 
 async function getSetting(params) {
 	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
+	return res;
+}
+
+async function getShows(params) {
+	const res = await fetchurl(
+		`/global/playlists/${params}&status=published&playlistType=video&decrypt=true`,
+		"GET",
+		"default"
+	);
+	return res;
+}
+
+async function getCdAlbums(params) {
+	const res = await fetchurl(
+		`/global/playlists/${params}&status=published&playlistType=audio&decrypt=true`,
+		"GET",
+		"default"
+	);
+	return res;
+}
+
+async function getChapters(params) {
+	const res = await fetchurl(
+		`/global/videos/${params}&status=published&decrypt=true`,
+		"GET",
+		"default"
+	);
+	return res;
+}
+
+async function getSongs(params) {
+	const res = await fetchurl(
+		`/global/songs/${params}&status=published&decrypt=true`,
+		"GET",
+		"default"
+	);
 	return res;
 }
 
@@ -21,6 +57,10 @@ const Home = async ({ params, searchParams }) => {
 	}
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
+	const shows = await getShows(`?page=1&limit=12&sort=-createdAt`);
+	const albums = await getCdAlbums(`?page=1&limit=12&sort=-createdAt`);
+	const chapters = await getChapters(`?page=1&limit=12&sort=-createdAt`);
+	const songs = await getSongs(`?page=1&limit=12&sort=-createdAt`);
 
 	return settings?.data?.maintenance === false ? (
 		<>
@@ -43,121 +83,324 @@ const Home = async ({ params, searchParams }) => {
 				locales=""
 				posType="website"
 			/>
-			<header className="bg-dark text-bg-dark py-5">
-				<div className="container py-5">
-					<h1 className="display-1 text-center text-uppercase">
-						NFA Transfers and Software Development
-					</h1>
-					<p className="display-6 text-center text-uppercase">
-						Streamlining your NFA transfers and building powerful software
-						solutions for your business needs.
-					</p>
-					{/* <div className="text-center">
-						<a className="btn btn-light me-1">Get Started</a>
-						<a className="btn btn-secondary ms-1">Learn More</a>
-					</div> */}
-				</div>
-			</header>
-			{/* OUR SERVICES */}
-			<Services />
-			{/* BUSINESS */}
+			{/* SHOWS */}
 			<section className="bg-dark text-bg-dark py-5">
 				<div className="container">
 					<div className="row">
-						<div className="col-lg-6">
-							<h2>ABOUT OUR BUSINESS</h2>
-							<p className="text-secondary">
-								With years of experience in both NFA transfers and software
-								development, we provide professional services that meet the
-								highest standards.
-							</p>
-							<h3>Why Choose Us?</h3>
-							<ul>
-								<li>Licensed and experienced NFA dealer</li>
-								<li>Professional software development team</li>
-								<li>Personalized service and support</li>
-								<li>Transparent pricing and processes</li>
-							</ul>
+						<div className="col-lg-12">
+							<div className="d-flex justify-content-between">
+								<h6>Current Shows</h6>
+
+								<Link
+									href={{
+										pathname: `/shows`,
+										query: {},
+									}}
+									className="btn btn-outline-light btn-sm"
+								>
+									View All Shows
+								</Link>
+							</div>
 						</div>
-						<div className="col-lg-6">
-							<Image
-								// src={
-								// 	settings.data.showcase_image ||
-								// 	"https://www.ijwhite.com/wp-content/uploads/2017/05/placeholder-800x400.jpeg"
-								// }
-								src={`https://photos.fife.usercontent.google.com/pw/AP1GczOPHYJS34EloMEmkrXnGgkyT7B8klD3AMB6U5_scK-L_iA8JEHmR2jdtQ=w3437-h1938-s-no-gm?authuser=1`}
-								width="800"
-								height="400"
-								alt="Business office"
-								className="img-fluid rounded"
-								style={{
-									objectFit: "cover",
-								}}
-							/>
-						</div>
+						{shows?.data?.map((show, index) => (
+							<article
+								key={show._id}
+								className={`col-lg-2 pt-3 ${index}-${show._id}`}
+							>
+								<div className="card bg-black text-bg-dark">
+									<div>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												left: "5px",
+											}}
+										>
+											{show.onairtype}
+										</span>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												right: "5px",
+											}}
+										>
+											{show.onairstatus}
+										</span>
+										<Image
+											src={show.files?.avatar.location.secure_location}
+											className="card-img-top"
+											alt="..."
+											width={356}
+											height={192}
+											style={{
+												objectFit: "cover",
+											}}
+										/>
+									</div>
+									<div className="card-body">
+										<span className="badge text-bg-light text-capitalize">
+											{show.category[0].title}
+										</span>
+										<h5>{show.title}</h5>
+										{/* <p className="card-text">
+													<ParseHtml text={show.text} />
+												</p> */}
+									</div>
+									<div className="card-footer">
+										<Link
+											href={{
+												pathname: `/shows/${show._id}/${show.slug}`,
+												query: {},
+											}}
+											className="btn btn-dark btn-sm w-100"
+										>
+											Continue Watching
+										</Link>
+									</div>
+								</div>
+							</article>
+						))}
 					</div>
 				</div>
 			</section>
-			{/* CONTACT US */}
-			<section className="bg-black text-bg-dark py-5">
+			{/* MUSIC ALBUMS */}
+			<section className="bg-dark text-bg-dark py-5">
 				<div className="container">
-					<h2 className="text-center">CONTACT US</h2>
-					<p className="text-center text-secondary">
-						Ready to get started? Reach out to discuss your NFA transfer or
-						software development needs.
-					</p>
 					<div className="row">
-						<div className="col-lg-6 mb-3">
-							<div className="border border-1 my-border-color p-5 rounded">
-								<h3>Send Us a Message</h3>
-								<p className="text-secondary">
-									Fill out the form below and we&apos;ll get back to you
-									shortly.
-								</p>
-								<ServiceForm />
+						<div className="col-lg-12">
+							<div className="d-flex justify-content-between">
+								<h6>Music Albums</h6>
+
+								<Link
+									href={{
+										pathname: `/albums`,
+										query: {},
+									}}
+									className="btn btn-outline-light btn-sm"
+								>
+									View All Albums
+								</Link>
 							</div>
 						</div>
-						<div className="col-lg-6 mb-3">
-							<div className="border border-1 my-border-color p-5 rounded">
-								<h3>Contact Information</h3>
-								<p className="text-secondary">
-									Reach out directly through any of these channels.
-								</p>
-								<ul className="list-unstyled">
-									<li>
-										<p className="fw-bold mb-0">Phone</p>
-										<p className="text-secondary mb-0">682-375-9607</p>
-										<p className="text-secondary">Monday-Friday, 9am-6pm</p>
-									</li>
-									<li>
-										<p className="fw-bold mb-0">Email</p>
-										<p className="text-secondary mb-0">
-											{process.env.NEXT_PUBLIC_WEBSITE_EMAIL}
-										</p>
-										<p className="text-secondary">
-											We&apos;ll respond within 24 hours
-										</p>
-									</li>
-								</ul>
-								<div className="bg-dark p-4 rounded">
-									<h4>Business Hours</h4>
-									<ul className="list-unstyled">
-										<li className="d-flex justify-content-between">
-											<span>Friday</span>
-											<span>6:00 PM - 10:00 PM</span>
-										</li>
-										<li className="d-flex justify-content-between">
-											<span>Saturday</span>
-											<span>9:00 AM - 6:00 PM</span>
-										</li>
-										<li className="d-flex justify-content-between">
-											<span>Sunday</span>
-											<span>9:00 AM - 6:00 PM</span>
-										</li>
-									</ul>
+						{albums?.data?.map((album, index) => (
+							<article
+								key={album._id}
+								className={`col-lg-2 pt-3 ${index}-${album._id}`}
+							>
+								<div className="card bg-orange text-bg-dark">
+									<div>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												left: "5px",
+											}}
+										>
+											{album.onairtype}
+										</span>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												right: "5px",
+											}}
+										>
+											{album.onairstatus}
+										</span>
+										<Image
+											src={album.files?.avatar.location.secure_location}
+											className="card-img-top"
+											alt="..."
+											width={356}
+											height={192}
+											style={{
+												objectFit: "cover",
+											}}
+										/>
+									</div>
+									<div className="card-body">
+										<span className="badge text-bg-light text-capitalize">
+											{/* {album?.category[0]?.title || "Undefined"} */}
+											{console.log("album category", album)}
+										</span>
+										<h5>{album.title}</h5>
+										{/* <p className="card-text">
+													<ParseHtml text={album.text} />
+												</p> */}
+									</div>
+									<div className="card-footer">
+										<Link
+											href={{
+												pathname: `/albums/${album._id}/${album.slug}`,
+												query: {},
+											}}
+											className="btn btn-orange btn-sm w-100"
+										>
+											Continue Watching
+										</Link>
+									</div>
 								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+			{/* EPISODES */}
+			<section className="bg-dark text-bg-dark py-5">
+				<div className="container">
+					<div className="row">
+						<div className="col-lg-12">
+							<div className="d-flex justify-content-between">
+								<h6>Recent Chapters</h6>
+
+								<Link
+									href={{
+										pathname: `/chapters`,
+										query: {},
+									}}
+									className="btn btn-outline-light btn-sm"
+								>
+									View All Chapters
+								</Link>
 							</div>
 						</div>
+						{chapters?.data?.map((chapter, index) => (
+							<article
+								key={chapter._id}
+								className={`col-lg-2 pt-3 ${index}-${chapter._id}`}
+							>
+								<div className="card bg-black text-bg-dark">
+									<div>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												left: "5px",
+											}}
+										>
+											{chapter.onairtype}
+										</span>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												right: "5px",
+											}}
+										>
+											{chapter.onairstatus}
+										</span>
+										<Image
+											src={chapter.files?.avatar.location.secure_location}
+											className="card-img-top"
+											alt="..."
+											width={356}
+											height={192}
+											style={{
+												objectFit: "cover",
+											}}
+										/>
+									</div>
+									<div className="card-body">
+										{/* <span className="badge text-bg-light text-capitalize">
+											{chapter.category.title}
+										</span> */}
+										<h5>{chapter.title}</h5>
+										{/* <p className="card-text">
+													<ParseHtml text={chapter.text} />
+												</p> */}
+									</div>
+									<div className="card-footer">
+										<Link
+											href={{
+												pathname: `/chapters/${chapter._id}/${chapter.slug}`,
+												query: {},
+											}}
+											className="btn btn-dark btn-sm w-100"
+										>
+											Continue Watching
+										</Link>
+									</div>
+								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+			{/* SONGS */}
+			<section className="bg-dark text-bg-dark py-5">
+				<div className="container">
+					<div className="row">
+						<div className="col-lg-12">
+							<div className="d-flex justify-content-between">
+								<h6>Recent Songs</h6>
+								<Link
+									href={{
+										pathname: `/songs`,
+										query: {},
+									}}
+									className="btn btn-outline-light btn-sm"
+								>
+									View All Songs
+								</Link>
+							</div>
+						</div>
+						{songs?.data?.map((song, index) => (
+							<article
+								key={song._id}
+								className={`col-lg-2 pt-3 ${index}-${song._id}`}
+							>
+								<div className="card bg-orange text-bg-dark">
+									<div>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												left: "5px",
+											}}
+										>
+											{song.onairtype}
+										</span>
+										<span
+											className="badge position-absolute text-bg-light text-capitalize"
+											style={{
+												top: "5px",
+												right: "5px",
+											}}
+										>
+											{song.onairstatus}
+										</span>
+										<Image
+											src={song.files?.avatar.location.secure_location}
+											className="card-img-top"
+											alt="..."
+											width={356}
+											height={192}
+											style={{
+												objectFit: "cover",
+											}}
+										/>
+									</div>
+									<div className="card-body">
+										<h5>{song.title}</h5>
+										{/* <p className="card-text">
+													<ParseHtml text={song.text} />
+												</p> */}
+									</div>
+									<div className="card-footer">
+										<Link
+											href={{
+												pathname: `/songs/${song._id}/${song.slug}`,
+												query: {},
+											}}
+											className="btn btn-orange btn-sm w-100"
+										>
+											Continue Watching
+										</Link>
+									</div>
+								</div>
+							</article>
+						))}
 					</div>
 				</div>
 			</section>

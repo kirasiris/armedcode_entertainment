@@ -16,7 +16,7 @@ const Menu = ({
 		return pathname === path ? "active" : "";
 	};
 	return (
-		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+		<Navbar collapseOnSelect expand="lg" bg="black" variant="dark">
 			<Container>
 				<div className="navbar-header">
 					<Navbar.Toggle
@@ -49,76 +49,19 @@ const Menu = ({
 								Home
 							</Link>
 						</li>
-						{/* <li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/api`,
-									query: {},
-								}}
-								className={`nav-link ${isActive(`${canonical}/api`)}`}
-							>
-								
-									
-								
-									API
-								
-							</Link>
-						</li> */}
 					</Nav>
 					<Nav as="ul">
 						<li className="nav-item">
 							<Link
 								href={{
-									pathname: `${canonical}/about`,
+									pathname: `${canonical}/search`,
 									query: {},
 								}}
-								className={`nav-link ${isActive(`${canonical}/about`)}`}
+								className={`btn btn-light btn-sm w-100 ${isActive(
+									`${canonical}/search`
+								)}`}
 							>
-								About
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/blog`,
-									query: {},
-								}}
-								className={`nav-link ${isActive(`${canonical}/blog`)}`}
-							>
-								Blog
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/theme`,
-									query: {},
-								}}
-								className={`nav-link ${isActive(`${canonical}/theme`)}`}
-							>
-								Portfolio
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/review`,
-									query: {},
-								}}
-								className={`nav-link ${isActive(`${canonical}/review`)}`}
-							>
-								Reviews
-							</Link>
-						</li>
-						<li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/contact`,
-									query: {},
-								}}
-								className={`nav-link ${isActive(`${canonical}/contact`)}`}
-							>
-								Contact
+								Search
 							</Link>
 						</li>
 					</Nav>

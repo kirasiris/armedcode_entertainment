@@ -105,3 +105,17 @@ a {
 		color-scheme: dark;
 	}
 }
+
+.bg-orange {
+	background-color: #400000 !important;
+}
+
+.btn-orange {
+	background-color: #ca3500;
+	border-color: #ca3500;
+}
+
+.btn-orange:hover {
+	background-color: #f54a00;
+	border-color: #f54a00;
+}
