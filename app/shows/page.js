@@ -8,7 +8,11 @@ async function getSetting(params) {
 }
 
 async function getShows(params) {
-	const res = await fetchurl(`/global/playlists/${params}`, "GET", "no-cache");
+	const res = await fetchurl(
+		`/global/playlists/${params}&status=published&playlistType=video`,
+		"GET",
+		"no-cache"
+	);
 	return res;
 }
 
@@ -28,7 +32,7 @@ const ShowsIndex = async ({ params, searchParams }) => {
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(
-		`?page=${page}&limit=${limit}&sort=${sort}&status=published&playlistType=video${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${decrypt}`
 	);
 
 	const animecategories = await getCategories(

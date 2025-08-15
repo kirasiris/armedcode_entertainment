@@ -21,7 +21,7 @@ async function getCategories(params) {
 	return res;
 }
 
-const AlbumsIndex = async ({ params, searchParams }) => {
+const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
@@ -29,10 +29,15 @@ const AlbumsIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
+	const keyword = awtdSearchParams.keyword || "";
+	const category =
+		awtdSearchParams.category !== ""
+			? `&category=${awtdSearchParams.category}`
+			: "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getAlbumsData = getAlbums(
-		`?page=${page}&limit=${limit}&sort=${sort}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}${category}${decrypt}`
 	);
 
 	const albumcategories = await getCategories(
@@ -45,6 +50,7 @@ const AlbumsIndex = async ({ params, searchParams }) => {
 		<List
 			objects={albums}
 			categories={[albumcategories]}
+			searchedKeyword={keyword}
 			searchParams={awtdSearchParams}
 		/>
 	) : (
@@ -52,4 +58,4 @@ const AlbumsIndex = async ({ params, searchParams }) => {
 	);
 };
 
-export default AlbumsIndex;
+export default AlbumsSearchIndex;

@@ -8,7 +8,11 @@ async function getSetting(params) {
 }
 
 async function getShows(params) {
-	const res = await fetchurl(`/global/playlists/${params}`, "GET", "no-cache");
+	const res = await fetchurl(
+		`/global/playlists/${params}&status=published&playlistType=video`,
+		"GET",
+		"no-cache"
+	);
 	return res;
 }
 
@@ -25,6 +29,7 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
+	const keyword = awtdSearchParams.keyword || "";
 	const category =
 		awtdSearchParams.category !== ""
 			? `&category=${awtdSearchParams.category}`
@@ -36,7 +41,7 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(
-		`?page=${page}&limit=${limit}&sort=${sort}&status=published&playlistType=video&keyword=${awtdSearchParams.keyword}${category}${onairstatus}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}${category}${onairstatus}${decrypt}`
 	);
 
 	const animecategories = await getCategories(
@@ -76,6 +81,7 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 				ovacategories,
 				videocategories,
 			]}
+			searchedKeyword={keyword}
 			searchParams={awtdSearchParams}
 		/>
 	) : (

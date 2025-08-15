@@ -2,7 +2,7 @@
 import Single from "./single";
 import NumericPagination from "@/layout/numericpagination";
 import NothingFoundAlert from "@/layout/nothingfoundalert";
-import SearchBar from "@/layout/show/searchbar";
+import SearchBar from "@/layout/album/searchbar";
 
 const List = ({
 	objects = [],

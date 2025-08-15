@@ -222,7 +222,6 @@ const Home = async ({ params, searchParams }) => {
 									<div className="card-body">
 										<span className="badge text-bg-light text-capitalize">
 											{/* {album?.category[0]?.title || "Undefined"} */}
-											{console.log("album category", album)}
 										</span>
 										<h5>{album.title}</h5>
 										{/* <p className="card-text">

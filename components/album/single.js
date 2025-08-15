@@ -14,7 +14,7 @@ const Single = ({
 	return (
 		<Suspense fallback={<Loading />}>
 			<article key={object._id} className={`col-lg-2 pt-3 pb-3 ${object._id}`}>
-				<div className="card bg-black text-bg-dark">
+				<div className="card bg-orange text-bg-dark">
 					<div>
 						<span
 							className="badge position-absolute text-bg-light text-capitalize"
@@ -58,7 +58,7 @@ const Single = ({
 								pathname: `/shows/${object._id}/${object.slug}`,
 								query: {},
 							}}
-							className="btn btn-dark btn-sm w-100"
+							className="btn btn-orange btn-sm w-100"
 						>
 							Continue Watching
 						</Link>
