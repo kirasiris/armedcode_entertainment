@@ -53,6 +53,7 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
     "react-loading-skeleton": "^3.5.0",
+    "react-share": "^5.2.2",
     "react-toastify": "^11.0.5",
     "rss": "^1.2.2",
     "showdown": "^2.1.0"

@@ -16,8 +16,8 @@ const List = ({
 				<SearchBar objects={categories} />
 				{objects?.data?.length > 0 ? (
 					<div className="row">
-						{objects.data?.map((blog) => (
-							<Single key={blog._id} object={blog} />
+						{objects.data?.map((show) => (
+							<Single key={show._id} object={show} />
 						))}
 						<NumericPagination
 							totalPages={
