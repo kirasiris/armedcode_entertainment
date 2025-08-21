@@ -13,7 +13,10 @@ const Single = ({
 }) => {
 	return (
 		<Suspense fallback={<Loading />}>
-			<article key={object._id} className={`col-lg-2 pt-3 pb-3 ${object._id}`}>
+			<article
+				key={object._id}
+				className={`col-xl-3 col-lg-4 col-md-6 col-12 mb-3 ${object._id}`}
+			>
 				<div className="card bg-black text-bg-dark">
 					<div>
 						<span
@@ -47,7 +50,7 @@ const Single = ({
 					</div>
 					<div className="card-body">
 						<span className="badge text-bg-light text-capitalize">
-							{object.category[0].title}
+							{object.category[0].title || "Undefined"}
 						</span>
 						<h5>{object.title}</h5>
 						<ParseHtml text={object.excerpt} classList="card-text" />

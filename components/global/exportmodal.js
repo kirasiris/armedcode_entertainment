@@ -25,9 +25,9 @@ const ExportModal = ({
 	iconSize = "45",
 }) => {
 	return (
-		<div className="card rounded-0 mb-3">
+		<div className="card bg-black text-bg-dark rounded-0 mb-3">
 			<div className="card-header">Share</div>
-			<div className="card-body bg-black text-bg-dark">
+			<div className="card-body bg-dark">
 				<Form.Control
 					readOnly
 					disabled

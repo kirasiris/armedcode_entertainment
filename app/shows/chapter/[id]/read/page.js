@@ -1,10 +1,12 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { formatDateWithoutTime } from "befree-utilities";
 import { fetchurl } from "@/helpers/fetchurl";
 import ParseHtml from "@/layout/parseHtml";
 import Loading from "@/app/shows/loading";
-import Link from "next/link";
 import Head from "@/app/head";
+import Player from "@/components/show/player";
+import ExportModal from "@/components/global/exportmodal";
 
 async function getChapter(params) {
 	const res = await fetchurl(`/global/videos${params}`, "GET", "no-cache");
@@ -25,8 +27,6 @@ const ReadChapter = async ({ params, searchParams }) => {
 	const chapters = await getChapters(
 		`?resourceId=${chapter?.data?.resourceId?._id}&sort=createdAt`
 	);
-
-	console.log("chapter", chapter?.data);
 
 	return (
 		<Suspense fallback={<Loading />}>
@@ -50,21 +50,11 @@ const ReadChapter = async ({ params, searchParams }) => {
 				posType="video"
 			/>
 			<article className="bg-dark">
-				<div className="border-0 rounded-0 p-0 mb-3">
-					<div className="container">
-						<div className="ratio ratio-16x9">
-							<iframe
-								src={chapter?.data?.players?.mega}
-								title={chapter?.data?.title}
-								allowFullScreen
-							/>
-						</div>
-					</div>
-				</div>
+				<Player object={chapter} />
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8">
-							<div className="card bg-black text-bg-dark mb-3">
+							<div className="card bg-black text-bg-dark rounded-0 mb-3">
 								<div className="card-header">
 									<div className="d-flex justify-content-between">
 										<div className="">
@@ -117,20 +107,36 @@ const ReadChapter = async ({ params, searchParams }) => {
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-4 mb-3">
-							<div className="card bg-black text-bg-dark">
+						<div className="col-lg-4">
+							<div className="card bg-black text-bg-dark rounded-0 mb-3">
+								<div className="card-header">Show</div>
+								<div className="card-body bg-dark">
+									<Link
+										href={{
+											pathname: `/shows/${chapter?.data?.resourceId?._id}/${chapter?.data?.resourceId?.slug}`,
+											query: {},
+										}}
+									>
+										{chapter?.data?.resourceId?.title}
+									</Link>
+								</div>
+							</div>
+							<div className="card bg-black text-bg-dark rounded-0 mb-3">
 								<div className="card-header">Chapters</div>
 								<div className="card-body bg-dark p-0">
-									<div className="row row-cols-5 g-1">
+									<div className="row row-cols-5 g-0">
 										{chapters?.data?.length > 0 &&
 											chapters?.data?.map((chapter, index) => (
-												<div key={chapter._id} className={`col ${index + 1}`}>
+												<div
+													key={chapter._id}
+													className={`col chapter-grid-link ${index + 1}`}
+												>
 													<Link
 														href={{
 															pathname: `/shows/chapter/${chapter?._id}/read`,
 															query: {},
 														}}
-														className="d-block text-center p-1 border text-decoration-none"
+														className="d-block text-center p-1 border border-secondary text-decoration-none"
 													>
 														{chapter?.orderingNumber}
 													</Link>
@@ -139,6 +145,11 @@ const ReadChapter = async ({ params, searchParams }) => {
 									</div>
 								</div>
 							</div>
+							<ExportModal
+								object={chapter?.data}
+								linkToShare={`/shows/chapter/${chapter?.data?._id}/read`}
+								iconSize="45"
+							/>
 						</div>
 					</div>
 				</div>

@@ -13,10 +13,6 @@ a {
 	text-decoration: none !important;
 }
 
-article a {
-	color: #0d6efd;
-}
-
 pre {
 	box-sizing: border-box;
 	white-space: pre-wrap;
@@ -33,54 +29,6 @@ pre {
 	overflow: auto;
 }
 
-blockquote {
-	overflow-wrap: break-word;
-	box-sizing: border-box;
-	padding: 10px 20px;
-	margin: 0 0 20px;
-	font-size: 17.5px;
-	border-left: 5px solid #eee;
-}
-
-.fr-class-code,
-code {
-	padding: 2px 4px;
-	font-size: 90%;
-	color: #c7254e;
-	background-color: #f9f2f4;
-	border-radius: 4px;
-}
-
-.privacy-options {
-	left: 70px;
-}
-
-#waveform > wave {
-	overflow: unset !important;
-	cursor: pointer !important;
-}
-
-p > img {
-	width: 100%;
-}
-
-.div-hover,
-.img-hover {
-	cursor: pointer;
-}
-
-.p-within-card-without-body {
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
-}
-
-.badge-tr-5 {
-	top: 5px;
-	right: 5px;
-}
-
 /*****************************
 SCHEDULE
 *****************************/
@@ -89,18 +37,7 @@ SCHEDULE
 ERROR COMPONENT
 *****************************/
 
-/*****************************
-TABS
-*****************************/
-.my-nav-links {
-	border: 2px solid #212529;
-	background-color: #212529;
-}
-
-.my-nav-links.active {
-	background-color: #000000 !important;
-}
-
-.my-border-color {
-	border-color: #212529 !important;
+.chapter-grid-link:hover {
+	background-color: #1d2023;
+	border-color: #1d2023;
 }

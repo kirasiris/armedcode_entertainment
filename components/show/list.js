@@ -15,7 +15,7 @@ const List = ({
 			<div className="container">
 				<SearchBar objects={categories} />
 				{objects?.data?.length > 0 ? (
-					<div className="row">
+					<div className="row g-4">
 						{objects.data?.map((show) => (
 							<Single key={show._id} object={show} />
 						))}

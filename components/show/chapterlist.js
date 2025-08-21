@@ -37,7 +37,7 @@ const ChapterList = ({
 								objects={objects.data}
 							/>
 						))}
-						<li className="list-group-item bg-black text-bg-dark">
+						<li className="list-group-item bg-dark text-bg-dark">
 							{objects?.pagination?.current} / {objects?.pagination?.totalpages}
 						</li>
 					</ul>

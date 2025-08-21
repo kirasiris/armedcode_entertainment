@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
 import PreviewModal from "./previewmodal";
-import { formatDateWithoutTime } from "befree-utilities";
 
 const Single = ({ object = {} }) => {
 	return (
 		<li
-			className={`list-group-item ${object?.orderingNumber} bg-black text-bg-dark`}
+			className={`list-group-item ${object?.orderingNumber} bg-dark text-bg-dark`}
 		>
 			<div className="float-start">
 				<Link
