@@ -1,5 +1,5 @@
 import { fetchurl } from "@/helpers/fetchurl";
-import List from "@/components/show/list";
+import List from "@/components/chapter/list";
 import ErrorPage from "@/layout/errorpage";
 
 async function getSetting(params) {
@@ -21,7 +21,7 @@ async function getCategories(params) {
 	return res;
 }
 
-const ShowsSearchIndex = async ({ params, searchParams }) => {
+const ShowsIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
@@ -29,19 +29,10 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
-	const keyword = awtdSearchParams.keyword || "";
-	const category =
-		awtdSearchParams.category !== ""
-			? `&category=${awtdSearchParams.category}`
-			: "";
-	const onairstatus =
-		awtdSearchParams.onairstatus !== ``
-			? `&onairstatus=${awtdSearchParams.onairstatus}`
-			: "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(
-		`?page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}${category}${onairstatus}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${decrypt}`
 	);
 
 	const animecategories = await getCategories(
@@ -81,7 +72,6 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 				ovacategories,
 				videocategories,
 			]}
-			searchedKeyword={keyword}
 			searchParams={awtdSearchParams}
 		/>
 	) : (
@@ -89,4 +79,4 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 	);
 };
 
-export default ShowsSearchIndex;
+export default ShowsIndex;

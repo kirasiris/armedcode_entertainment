@@ -9,7 +9,7 @@ async function getSetting(params) {
 
 async function getShows(params) {
 	const res = await fetchurl(
-		`/global/playlists/${params}&status=published&playlistType=video`,
+		`/global/playlists${params}&status=published&playlistType=video`,
 		"GET",
 		"no-cache"
 	);

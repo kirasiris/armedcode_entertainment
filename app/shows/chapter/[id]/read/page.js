@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { formatDateWithoutTime } from "befree-utilities";
@@ -42,7 +43,7 @@ const ReadChapter = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				// category={chapter.data.category.title}
-				url={`/shows/chapter/${chapter.data._id}/${chapter.data.slug}`}
+				url={`/shows/chapter/${chapter.data._id}/read`}
 				author={chapter.data.user.name}
 				createdAt={chapter.data.createdAt}
 				updatedAt={chapter.data.updatedAt}

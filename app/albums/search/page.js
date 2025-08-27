@@ -9,7 +9,7 @@ async function getSetting(params) {
 
 async function getAlbums(params) {
 	const res = await fetchurl(
-		`/global/playlists/${params}&status=published&playlistType=audio`,
+		`/global/playlists${params}&status=published&playlistType=audio`,
 		"GET",
 		"no-cache"
 	);

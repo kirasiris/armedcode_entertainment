@@ -6,7 +6,6 @@ import { fetchurl } from "@/helpers/fetchurl";
 import ParseHtml from "@/layout/parseHtml";
 import Globalcontent from "@/layout/content";
 import Globalsidebar from "@/layout/sidebar";
-import AlbumPlayButton from "@/components/album/albumplaybutton";
 
 async function getAlbums(params) {
 	const res = await fetchurl(`/global/playlists${params}`, "GET", "no-cache");
@@ -19,9 +18,10 @@ async function getSongs(params) {
 	return res;
 }
 
-const AlbumRead = async ({ params, searchParams }) => {
+const AlbumReadSearchIndex = async ({ params, searchParams }) => {
 	const awtdParams = await params;
 	const awtdSearchParams = await searchParams;
+	const keyword = awtdSearchParams.keyword || "";
 
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 10;
@@ -30,7 +30,7 @@ const AlbumRead = async ({ params, searchParams }) => {
 	const album = await getAlbums(`/${awtdParams.id}`);
 
 	const songs = await getSongs(
-		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}`
+		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}`
 	);
 
 	return (
@@ -84,7 +84,6 @@ const AlbumRead = async ({ params, searchParams }) => {
 									</figure>
 								</div>
 							</div>
-							<AlbumPlayButton object={album} objects={songs?.data} />
 							<ExportModal
 								object={album?.data}
 								linkToShare={`/albums/${album?.data?._id}/${album?.data?.slug}`}
@@ -100,4 +99,4 @@ const AlbumRead = async ({ params, searchParams }) => {
 	);
 };
 
-export default AlbumRead;
+export default AlbumReadSearchIndex;

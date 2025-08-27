@@ -5,6 +5,8 @@ import Head from "@/app/head";
 import Menu from "@/layout/menu";
 import Footer from "@/layout/footer";
 import { fetchurl } from "@/helpers/fetchurl";
+import { AudioPlayerProvider } from "@/context/audioplayercontext";
+import GlobalAudioPlayer from "@/layout/globalaudioplayer";
 
 async function getSetting(params) {
 	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
@@ -24,13 +26,16 @@ const RootLayout = async ({ children }) => {
 				/>
 			</head>
 			<body>
-				<Menu
-					title={settings?.data?.title}
-					logo={settings?.data?.logo}
-					canonical={process.env.NEXT_PUBLIC_WEBSITE_URL}
-				/>
-				<main>{children}</main>
-				<Footer canonical={process.env.NEXT_PUBLIC_WEBSITE_URL} />
+				<AudioPlayerProvider>
+					<Menu
+						title={settings?.data?.title}
+						logo={settings?.data?.logo}
+						canonical={process.env.NEXT_PUBLIC_WEBSITE_URL}
+					/>
+					<main>{children}</main>
+					<Footer canonical={process.env.NEXT_PUBLIC_WEBSITE_URL} />
+					<GlobalAudioPlayer />
+				</AudioPlayerProvider>
 			</body>
 		</html>
 	);
