@@ -91,17 +91,7 @@ const GlobalAudioPlayer = () => {
 	if (!currentSong) return null;
 
 	return (
-		<div
-			className="global-player"
-			style={{
-				position: "fixed",
-				bottom: "0px",
-				width: "100%",
-				backgroundColor: "#fff",
-				borderTop: "1px solid red",
-				padding: "20px",
-			}}
-		>
+		<div className="global-player bg-orange text-bg-dark">
 			<audio ref={audioRef} />
 			<div className="container-fluid">
 				<div className="row align-items-center">
@@ -123,19 +113,19 @@ const GlobalAudioPlayer = () => {
 							/>
 							<div>
 								<div
-									className="text-light-custom fw-bold"
+									className="text-light fw-bold"
 									style={{ fontSize: "0.9rem" }}
 								>
 									<Link
 										href={{
-											pathname: `/songs/${currentSong?._id}/${currentSong?.slug}`,
+											pathname: `/songs/${currentSong?._id}/read`,
 											query: {},
 										}}
 									>
 										{currentSong.title}
 									</Link>
 								</div>
-								<div className="text-muted" style={{ fontSize: "0.8rem" }}>
+								<div style={{ fontSize: "0.8rem" }}>
 									{currentSong.user?.name}
 								</div>
 							</div>
@@ -145,30 +135,28 @@ const GlobalAudioPlayer = () => {
 						<div className="text-center">
 							<div className="mb-2">
 								<button
-									className="btn btn-outline-light btn-sm me-2"
+									className="btn btn-orange btn-sm me-2"
 									onClick={previousSong}
 								>
-									⏮
+									<i className="fa-solid fa-backward" aria-hidden />
 								</button>
 								<button
-									className="btn btn-light btn-sm me-2"
+									className="btn btn-orange btn-sm me-2"
 									onClick={togglePlayPause}
 								>
-									{isPlaying ? "⏸" : "▶"}
+									{isPlaying ? (
+										<i className="fa-solid fa-pause" aria-hidden />
+									) : (
+										<i className="fa-solid fa-play" aria-hidden />
+									)}
 								</button>
-								<button
-									className="btn btn-outline-light btn-sm"
-									onClick={nextSong}
-								>
-									⏭
+								<button className="btn btn-orange btn-sm" onClick={nextSong}>
+									<i className="fa-solid fa-forward" aria-hidden />
 								</button>
 							</div>
 
 							<div className="d-flex align-items-center">
-								<span
-									className="text-muted me-2"
-									style={{ fontSize: "0.8rem" }}
-								>
+								<span className="me-2" style={{ fontSize: "0.8rem" }}>
 									{formatTime(currentTime)}
 								</span>
 								<div
@@ -190,13 +178,11 @@ const GlobalAudioPlayer = () => {
 											}%`,
 											borderRadius: "0.375rem",
 										}}
-										className="bg-primary"
+										className="bg-danger"
+										variant="danger"
 									/>
 								</div>
-								<span
-									className="text-muted ms-2"
-									style={{ fontSize: "0.8rem" }}
-								>
+								<span className="ms-2" style={{ fontSize: "0.8rem" }}>
 									{formatTime(duration)}
 								</span>
 							</div>
@@ -204,8 +190,8 @@ const GlobalAudioPlayer = () => {
 					</div>
 					<div className="col-md-3">
 						<div className="d-flex align-items-center justify-content-end">
-							<span className="text-muted me-2" style={{ fontSize: "0.8rem" }}>
-								🔊
+							<span className="me-2" style={{ fontSize: "0.8rem" }}>
+								<i className="fa-solid fa-volume-high" aria-hidden />
 							</span>
 							<input
 								type="range"

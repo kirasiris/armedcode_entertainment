@@ -52,7 +52,7 @@ const ReadSong = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				// category={song.data.category.title}
-				url={`/albums/song/${song.data._id}/read`}
+				url={`/songs/${song.data._id}/read`}
 				author={song.data.user.name}
 				createdAt={song.data.createdAt}
 				updatedAt={song.data.updatedAt}
@@ -182,7 +182,7 @@ const ReadSong = async ({ params, searchParams }) => {
 						</div>
 						<div className="col-lg-4">
 							<div className="card bg-black text-bg-dark rounded-0 mb-3">
-								<div className="card-header">Show</div>
+								<div className="card-header">Album</div>
 								<div className="card-body bg-dark">
 									<Link
 										href={{
@@ -206,7 +206,7 @@ const ReadSong = async ({ params, searchParams }) => {
 												>
 													<Link
 														href={{
-															pathname: `/albums/song/${song?._id}/read`,
+															pathname: `/songs/${song?._id}/read`,
 															query: {},
 														}}
 														className="d-block text-center p-1 border border-secondary text-decoration-none"
@@ -220,7 +220,7 @@ const ReadSong = async ({ params, searchParams }) => {
 							</div>
 							<ExportModal
 								object={song?.data}
-								linkToShare={`/albums/song/${song?.data?._id}/read`}
+								linkToShare={`/songs/${song?.data?._id}/read`}
 								iconSize="45"
 							/>
 						</div>

@@ -5,7 +5,8 @@ import Loading from "@/app/shows/loading";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const SongSingle = ({ object = {}, objects = [], index = 0 }) => {
-	const { playSong, currentSong, isPlaying } = useAudioPlayer();
+	const { playSong, togglePlayPause, currentSong, isPlaying } =
+		useAudioPlayer();
 
 	const isCurrentSong = currentSong?._id === object?._id;
 
@@ -28,11 +29,17 @@ const SongSingle = ({ object = {}, objects = [], index = 0 }) => {
 						<div className="me-3">
 							<button
 								className={`btn btn-${
-									isCurrentSong && isPlaying ? "primary" : "outline-light"
+									isCurrentSong && isPlaying ? "danger" : "orange"
 								} btn-sm`}
-								onClick={handlePlaySong}
+								onClick={
+									isCurrentSong && isPlaying ? togglePlayPause : handlePlaySong
+								}
 							>
-								{isCurrentSong && isPlaying ? "⏸" : "▶"}
+								{isCurrentSong && isPlaying ? (
+									<i className="fa-solid fa-pause" />
+								) : (
+									<i className="fa-solid fa-play" />
+								)}
 							</button>
 						</div>
 
@@ -40,7 +47,7 @@ const SongSingle = ({ object = {}, objects = [], index = 0 }) => {
 							<div className="text-light">
 								<Link
 									href={{
-										pathname: `/albums/song/${object._id}/read`,
+										pathname: `/songs/${object._id}/read`,
 										query: {},
 									}}
 								>

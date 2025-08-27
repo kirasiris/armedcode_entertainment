@@ -196,7 +196,7 @@ const Home = async ({ params, searchParams }) => {
 						</div>
 					</div>
 					<div className="row g-4">
-						<AlbumList objects={albums} />
+						<AlbumList objects={albums} songs={songs?.data} />
 					</div>
 				</div>
 			</section>

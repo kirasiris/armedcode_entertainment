@@ -37,7 +37,22 @@ SCHEDULE
 ERROR COMPONENT
 *****************************/
 
+/*****************************
+GRID SYSTEM FOR CHAPTERS AND SONGS
+*****************************/
 .chapter-grid-link:hover {
 	background-color: #1d2023;
 	border-color: #1d2023;
+}
+
+/*****************************
+GLOBAL PLAYER
+*****************************/
+.global-player {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	/* background-color: #fff; */
+	border-top: 1px solid red;
+	padding: 20px;
 }

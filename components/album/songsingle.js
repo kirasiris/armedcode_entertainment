@@ -3,7 +3,8 @@ import { useAudioPlayer } from "@/context/audioplayercontext";
 import Link from "next/link";
 
 const Single = ({ object = {}, objects = [], index = 0 }) => {
-	const { playSong, currentSong, isPlaying } = useAudioPlayer();
+	const { playSong, togglePlayPause, currentSong, isPlaying } =
+		useAudioPlayer();
 
 	const isCurrentSong = currentSong?._id === object?._id;
 
@@ -23,11 +24,17 @@ const Single = ({ object = {}, objects = [], index = 0 }) => {
 			<div className="float-start">
 				<button
 					className={`btn btn-${
-						isCurrentSong && isPlaying ? "primary" : "outline-light"
+						isCurrentSong && isPlaying ? "danger" : "orange"
 					} btn-sm me-1`}
-					onClick={handlePlaySong}
+					onClick={
+						isCurrentSong && isPlaying ? togglePlayPause : handlePlaySong
+					}
 				>
-					{isCurrentSong && isPlaying ? "⏸" : "▶"}
+					{isCurrentSong && isPlaying ? (
+						<i className="fa-solid fa-pause" />
+					) : (
+						<i className="fa-solid fa-play" />
+					)}
 				</button>
 				<Link
 					href={{

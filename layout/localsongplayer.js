@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Card, Button, ProgressBar } from "react-bootstrap";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
-export default function LocalSongPlayer({ song }) {
+const LocalSongPlayer = ({ song }) => {
 	const {
 		currentSong,
 		isPlaying,
@@ -178,27 +178,28 @@ export default function LocalSongPlayer({ song }) {
 	const currentDisplayVolume = isSameSong ? volume : localVolume;
 
 	return (
-		<Card className="bg-dark-custom border-gray-custom mt-4">
-			<Card.Body>
-				<h5 className="text-light-custom mb-3">Song Player</h5>
-
+		<div className="card bg-orange text-bg-dark my-3">
+			<div className="card-body">
+				<h5 className="text-light mb-3">Song Player</h5>
 				<audio
 					ref={localAudioRef}
 					src={song.files?.audio_url?.location?.secure_location}
 					preload="metadata"
 				/>
-
 				<div className="d-flex align-items-center gap-3 mb-3">
 					<Button
-						variant={currentDisplayPlaying ? "success" : "primary"}
+						variant={currentDisplayPlaying ? "danger" : "orange"}
 						onClick={handlePlayPause}
 						size="lg"
 					>
-						{currentDisplayPlaying ? "⏸" : "▶"}
+						{currentDisplayPlaying ? (
+							<i className="fa-solid fa-pause" aria-hidden />
+						) : (
+							<i className="fa-solid fa-play" aria-hidden />
+						)}
 					</Button>
-
 					<div className="flex-grow-1">
-						<div className="d-flex justify-content-between text-light-custom small mb-1">
+						<div className="d-flex justify-content-between text-light small mb-1">
 							<span>{formatTime(currentDisplayTime)}</span>
 							<span>{formatTime(currentDisplayDuration)}</span>
 						</div>
@@ -207,12 +208,14 @@ export default function LocalSongPlayer({ song }) {
 							style={{ height: "8px", cursor: "pointer" }}
 							onClick={handleSeek}
 							className="bg-secondary"
+							variant="danger"
 						/>
 					</div>
 				</div>
-
 				<div className="d-flex align-items-center gap-2">
-					<span className="text-light-custom small">🔊</span>
+					<span className="small">
+						<i className="fa-solid fa-volume-high" aria-hidden />
+					</span>
 					<input
 						type="range"
 						min="0"
@@ -227,12 +230,14 @@ export default function LocalSongPlayer({ song }) {
 
 				{isSameSong && (
 					<div className="mt-2">
-						<small className="text-success">
+						<small>
 							🎵 Synced with global player (audio from local player)
 						</small>
 					</div>
 				)}
-			</Card.Body>
-		</Card>
+			</div>
+		</div>
 	);
-}
+};
+
+export default LocalSongPlayer;

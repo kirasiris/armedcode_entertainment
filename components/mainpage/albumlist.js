@@ -6,8 +6,12 @@ import { fetchurl } from "@/helpers/fetchurl";
 import { toast } from "react-toastify";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
-const AlbumList = ({ objects = [] }) => {
-	const { playSong } = useAudioPlayer();
+const AlbumList = ({ objects = [], songs = [] }) => {
+	const { playSong, currentSong, isPlaying, playlist } = useAudioPlayer();
+
+	const isAlbumPlaying =
+		songs.some((song) => song._id === currentSong?._id) && isPlaying;
+
 	const handlePlayAlbum = async (albumId) => {
 		const res = await fetchurl(
 			`/global/songs?resourceId=${albumId}`,
@@ -72,7 +76,9 @@ const AlbumList = ({ objects = [] }) => {
 						className="btn btn-orange btn-sm w-100"
 						onClick={() => handlePlayAlbum(album?._id)}
 					>
-						▶ Play
+						{album?._id === playlist[0]?.resourceId?._id && isAlbumPlaying
+							? "Playing"
+							: "Play"}
 					</button>
 				</div>
 			</div>

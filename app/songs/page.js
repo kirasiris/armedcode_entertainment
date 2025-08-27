@@ -1,5 +1,5 @@
 import { fetchurl } from "@/helpers/fetchurl";
-import List from "@/components/chapter/list";
+import List from "@/components/song/list";
 import ErrorPage from "@/layout/errorpage";
 
 async function getSetting(params) {

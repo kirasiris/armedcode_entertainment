@@ -12,7 +12,7 @@ const ChapterSingle = ({ object = {}, playlist = {}, index = 0 }) => {
 						<div className="flex-grow-1">
 							<Link
 								href={{
-									pathname: `/shows/chapter/${object._id}/read`,
+									pathname: `/chapters/${object._id}/read`,
 									query: {},
 								}}
 							>
