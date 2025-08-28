@@ -5,12 +5,7 @@ import Link from "next/link";
 import Loading from "@/app/albums/loading";
 import ParseHtml from "@/layout/parseHtml";
 
-const Single = ({
-	object = {},
-	fullWidth = false,
-	imageWidth = "415",
-	imageHeight = "207",
-}) => {
+const Single = ({ object = {} }) => {
 	return (
 		<Suspense fallback={<Loading />}>
 			<article

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAudioPlayer } from "@/context/audioplayercontext";
+import { toast } from "react-toastify";
 
 const AlbumPlayButton = ({ objects }) => {
 	const { playSong, currentSong, isPlaying } = useAudioPlayer();
@@ -9,9 +10,9 @@ const AlbumPlayButton = ({ objects }) => {
 		objects?.some((song) => song._id === currentSong?._id) && isPlaying;
 
 	const handlePlayAlbum = () => {
-		if (objects?.length > 0) {
-			playSong(objects[0], objects, 0);
-		}
+		if (objects?.length === 0)
+			toast.error("Not possible to play album", "bottom");
+		if (objects?.length > 0) playSong(objects[0], objects, 0);
 	};
 
 	return (
