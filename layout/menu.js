@@ -54,14 +54,14 @@ const Menu = ({
 						<li className="nav-item">
 							<Link
 								href={{
-									pathname: `${canonical}/search`,
+									pathname: `${canonical}/advancedsearch`,
 									query: {},
 								}}
 								className={`btn btn-light btn-sm w-100 ${isActive(
 									`${canonical}/search`
 								)}`}
 							>
-								Search
+								Advanced Search
 							</Link>
 						</li>
 					</Nav>

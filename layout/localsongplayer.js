@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Card, Button, ProgressBar } from "react-bootstrap";
+import { Button, ProgressBar } from "react-bootstrap";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const LocalSongPlayer = ({ object }) => {
@@ -122,6 +122,14 @@ const LocalSongPlayer = ({ object }) => {
 		}
 	}, [isSameSong, isPlaying, currentTime, duration, globalAudioRef]);
 
+	useEffect(() => {
+		if (!currentSong && localAudioRef.current && localIsPlaying) {
+			// Global player was closed, pause local player
+			localAudioRef.current.pause();
+			setLocalIsPlaying(false);
+		}
+	}, [currentSong, localIsPlaying]);
+
 	const handlePlayPause = () => {
 		if (localAudioRef.current) {
 			if (isSameSong) {
@@ -134,7 +142,7 @@ const LocalSongPlayer = ({ object }) => {
 					if (globalAudioRef.current) {
 						globalAudioRef.current.pause();
 					}
-					playSong(song, [song], 0);
+					playSong(object, [object], 0);
 					localAudioRef.current.play();
 				}
 			}

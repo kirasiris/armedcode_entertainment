@@ -3,9 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const SearchBar = ({ objects = [], secondaryobjects = [] }) => {
-	console.log("videos", objects);
-	console.log(`shows`, secondaryobjects);
-
 	const router = useRouter();
 	const [searchParams, setSearchParams] = useState({
 		keyword: "",
@@ -15,10 +12,14 @@ const SearchBar = ({ objects = [], secondaryobjects = [] }) => {
 
 	const { keyword, showId, sort } = searchParams;
 
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
+	const showQuery = showId ? `&resourceId=${showId}` : "";
+
 	const searchData = async (e) => {
 		e.preventDefault();
 		router.push(
-			`/chapters/search?keyword=${keyword}&resourceId=${showId}&page=1&limit=36&sort=${sort}`
+			`/chapters/search?page=1&limit=36&sort=${sort}${keywordQuery}${showQuery}`
 		);
 	};
 

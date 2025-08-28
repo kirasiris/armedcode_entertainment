@@ -7,17 +7,25 @@ const SearchBar = ({ objects = [] }) => {
 	const [searchParams, setSearchParams] = useState({
 		keyword: "",
 		type: "",
-		category: "",
+		categoryId: "",
+		onairtype: "",
 		onairstatus: "finished",
 		sort: "-createdAt",
 	});
 
-	const { keyword, type, category, onairstatus, sort } = searchParams;
+	const { keyword, type, categoryId, onairtype, onairstatus, sort } =
+		searchParams;
+
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
+	const categoryQuery = categoryId ? `&category=${categoryId}` : "";
+	const onairtypeQuery = onairtype ? `&onairtype=${onairtype}` : "";
+	const onairstatusQuery = onairstatus ? `&onairstatus=${onairstatus}` : "";
 
 	const searchData = async (e) => {
 		e.preventDefault();
 		router.push(
-			`/shows/search?keyword=${keyword}&category=${category}&page=1&limit=36&sort=${sort}&onairstatus=${onairstatus}`
+			`/shows/search?page=1&limit=36&sort=${sort}${onairtypeQuery}${onairstatusQuery}${keywordQuery}${categoryQuery}`
 		);
 	};
 
@@ -41,13 +49,13 @@ const SearchBar = ({ objects = [] }) => {
 			</div>
 			<div className="col">
 				<select
-					id="type"
-					name="type"
-					value={type}
+					id="onairtype"
+					name="onairtype"
+					value={onairtype}
 					onChange={(e) => {
 						setSearchParams({
 							...searchParams,
-							type: e.target.value,
+							onairtype: e.target.value,
 						});
 					}}
 					className="form-control"
@@ -63,49 +71,49 @@ const SearchBar = ({ objects = [] }) => {
 			</div>
 			<div className="col">
 				<select
-					id="category"
-					name="category"
-					value={category}
+					id="categoryId"
+					name="categoryId"
+					value={categoryId}
 					onChange={(e) => {
 						setSearchParams({
 							...searchParams,
-							category: e.target.value,
+							categoryId: e.target.value,
 						});
 					}}
 					className="form-control"
 				>
 					<option value="">Category</option>
-					{type === "anime" &&
+					{onairtype === "anime" &&
 						objects[0]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}
 							</option>
 						))}
-					{type === "tv" &&
+					{onairtype === "tv" &&
 						objects[1]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}
 							</option>
 						))}
-					{type === "movie" &&
+					{onairtype === "movie" &&
 						objects[2]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}
 							</option>
 						))}
-					{type === "special" &&
+					{onairtype === "special" &&
 						objects[3]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}
 							</option>
 						))}
-					{type === "ova" &&
+					{onairtype === "ova" &&
 						objects[4]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}
 							</option>
 						))}
-					{type === "video" &&
+					{onairtype === "video" &&
 						objects[5]?.data?.map((category, index) => (
 							<option key={category._id} value={category._id}>
 								{category.title}

@@ -3,21 +3,30 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@/app/shows/loading";
-import ParseHtml from "@/layout/parseHtml";
+import { useAudioPlayer } from "@/context/audioplayercontext";
 
-const Single = ({
-	object = {},
-	fullWidth = false,
-	imageWidth = "415",
-	imageHeight = "207",
-}) => {
+const Single = ({ object = {}, objects = [], index = 0 }) => {
+	const { playSong, togglePlayPause, currentSong, isPlaying } =
+		useAudioPlayer();
+
+	const isCurrentSong = currentSong?._id === object?._id;
+
+	const handlePlaySong = () => {
+		playSong(object, objects, index);
+	};
+
+	const formatDuration = (duration) => {
+		if (!duration || duration === "0:0") return "Unknown";
+		return duration;
+	};
+
 	return (
 		<Suspense fallback={<Loading />}>
 			<article
 				key={object._id}
 				className={`col-xl-3 col-lg-4 col-md-6 col-12 mb-3 ${object._id}`}
 			>
-				<div className="card bg-black text-bg-dark">
+				<div className="card bg-orange text-bg-dark">
 					<div>
 						<span
 							className="badge position-absolute text-bg-light text-capitalize"
@@ -49,22 +58,31 @@ const Single = ({
 						/>
 					</div>
 					<div className="card-body">
-						<span className="badge text-bg-light text-capitalize">
-							{object.category[0].title || "Undefined"}
-						</span>
-						<h5>{object.title}</h5>
-						<ParseHtml text={object.excerpt} classList="card-text" />
-					</div>
-					<div className="card-footer">
 						<Link
 							href={{
-								pathname: `/shows/${object._id}/${object.slug}`,
+								pathname: `/songs/${object?._id}/read`,
 								query: {},
 							}}
-							className="btn btn-dark btn-sm w-100"
 						>
-							Continue Watching
+							<h5>{object.title}</h5>
 						</Link>
+						<p className="card-text">{object?.sub_title}</p>
+					</div>
+					<div className="card-footer">
+						<button
+							className={`btn btn-${
+								isCurrentSong && isPlaying ? "danger" : "orange"
+							} btn-sm w-100`}
+							onClick={
+								isCurrentSong && isPlaying ? togglePlayPause : handlePlaySong
+							}
+						>
+							{isCurrentSong && isPlaying ? (
+								<i className="fa-solid fa-pause" aria-hidden />
+							) : (
+								<i className="fa-solid fa-play" aria-hidden />
+							)}
+						</button>
 					</div>
 				</div>
 			</article>

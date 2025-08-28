@@ -27,22 +27,23 @@ async function getVideos(params) {
 
 const ChaptersSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
+	const keyword = awtdSearchParams.keyword;
+	const resourceId = awtdSearchParams.resourceId;
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
 
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
-	const resourceId = awtdSearchParams.resourceId
-		? `&resourceId=${awtdSearchParams.resourceId}`
-		: "";
-	const keyword = awtdSearchParams.keyword || "";
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
+	const resourceQuery = resourceId ? `&resourceId=${resourceId}` : "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(`?page=1&sort=-createdAt`);
 
 	const getVideosData = getVideos(
-		`?page=${page}&limit=${limit}&sort=${sort}${resourceId}&keyword=${keyword}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${resourceQuery}${keywordQuery}${decrypt}`
 	);
 
 	const [shows, videos] = await Promise.all([getShowsData, getVideosData]);

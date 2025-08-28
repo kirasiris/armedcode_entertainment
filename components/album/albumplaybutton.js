@@ -1,7 +1,6 @@
 "use client";
-
-import { useAudioPlayer } from "@/context/audioplayercontext";
 import { toast } from "react-toastify";
+import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const AlbumPlayButton = ({ objects }) => {
 	const { playSong, currentSong, isPlaying } = useAudioPlayer();

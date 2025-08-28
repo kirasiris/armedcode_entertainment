@@ -23,25 +23,32 @@ async function getCategories(params) {
 
 const ShowsSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
-
+	const keyword = awtdSearchParams.keyword;
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
 
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
-	const keyword = awtdSearchParams.keyword || "";
-	const category =
-		awtdSearchParams.category !== ""
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
+	const categoryQuery =
+		awtdSearchParams.category !== "" && awtdSearchParams.category !== undefined
 			? `&category=${awtdSearchParams.category}`
 			: "";
-	const onairstatus =
-		awtdSearchParams.onairstatus !== ``
+	const onairtypeQuery =
+		awtdSearchParams.onairtype !== `` &&
+		awtdSearchParams.onairtype !== undefined
+			? `&onairtype=${awtdSearchParams.onairtype}`
+			: "";
+	const onairstatusQuery =
+		awtdSearchParams.onairstatus !== `` &&
+		awtdSearchParams.onairstatus !== undefined
 			? `&onairstatus=${awtdSearchParams.onairstatus}`
 			: "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(
-		`?page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}${category}${onairstatus}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}${categoryQuery}${onairtypeQuery}${onairstatusQuery}${decrypt}`
 	);
 
 	const animecategories = await getCategories(

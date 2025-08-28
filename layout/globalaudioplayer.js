@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ProgressBar } from "react-bootstrap";
 import { useAudioPlayer } from "@/context/audioplayercontext";
-import Image from "next/image";
 
 const GlobalAudioPlayer = () => {
 	const {
@@ -92,131 +92,129 @@ const GlobalAudioPlayer = () => {
 	if (!currentSong) return null;
 
 	return (
-		isPlaying && (
-			<div className="global-player bg-orange text-bg-dark">
-				<audio ref={audioRef} />
-				<div className="container-fluid">
-					<div className="row align-items-center">
-						<div className="col-md-3">
-							<div className="d-flex align-items-center">
-								<Image
-									src={
-										currentSong.files?.avatar?.location?.secure_location ||
-										"/placeholder.svg?height=50&width=50&query=music"
-									}
-									alt={currentSong.title}
-									className="me-3"
-									width={50}
-									height={50}
-									style={{
-										objectFit: "cover",
-										borderRadius: "4px",
-									}}
-								/>
-								<div>
-									<div
-										className="text-light fw-bold"
-										style={{ fontSize: "0.9rem" }}
-									>
-										<Link
-											href={{
-												pathname: `/songs/${currentSong?._id}/read`,
-												query: {},
-											}}
-										>
-											{currentSong.title}
-										</Link>
-									</div>
-									<div style={{ fontSize: "0.8rem" }}>
-										{currentSong.user?.name}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="col-md-6">
-							<div className="text-center">
-								<div className="mb-2">
-									<button
-										className="btn btn-orange btn-sm me-2"
-										onClick={previousSong}
-									>
-										<i className="fa-solid fa-backward" aria-hidden />
-									</button>
-									<button
-										className="btn btn-orange btn-sm me-2"
-										onClick={togglePlayPause}
-									>
-										{isPlaying ? (
-											<i className="fa-solid fa-pause" aria-hidden />
-										) : (
-											<i className="fa-solid fa-play" aria-hidden />
-										)}
-									</button>
-									<button className="btn btn-orange btn-sm" onClick={nextSong}>
-										<i className="fa-solid fa-forward" aria-hidden />
-									</button>
-								</div>
-
-								<div className="d-flex align-items-center">
-									<span className="me-2" style={{ fontSize: "0.8rem" }}>
-										{formatTime(currentTime)}
-									</span>
-									<div
-										className="flex-grow-1 bg-secondary"
-										style={{
-											height: "8px",
-											borderRadius: "0.375rem",
-											cursor: "pointer",
-										}}
-										onClick={handleSeek}
-									>
-										<ProgressBar
-											now={(currentTime / duration) * 100}
-											style={{
-												height: "8px",
-												cursor: "pointer",
-												width: `${
-													duration ? (currentTime / duration) * 100 : 0
-												}%`,
-												borderRadius: "0.375rem",
-											}}
-											className="bg-danger"
-											variant="danger"
-										/>
-									</div>
-									<span className="ms-2" style={{ fontSize: "0.8rem" }}>
-										{formatTime(duration)}
-									</span>
-								</div>
-							</div>
-						</div>
-						<div className="col-md-3">
-							<div className="d-flex align-items-center justify-content-end">
-								<span className="me-2" style={{ fontSize: "0.8rem" }}>
-									<i className="fa-solid fa-volume-high" aria-hidden />
-								</span>
-								<input
-									type="range"
-									min="0"
-									max="1"
-									step="0.1"
-									value={volume}
-									onChange={(e) => setVolume(Number.parseFloat(e.target.value))}
-									className="form-range"
-									style={{ width: "100px" }}
-								/>
-								<button
-									className="btn btn-orange btn-sm ms-2"
-									onClick={closePlayer}
+		<div className="global-player bg-orange text-bg-dark">
+			<audio ref={audioRef} />
+			<div className="container-fluid">
+				<div className="row align-items-center">
+					<div className="col-md-3">
+						<div className="d-flex align-items-center">
+							<Image
+								src={
+									currentSong.files?.avatar?.location?.secure_location ||
+									"/placeholder.svg?height=50&width=50&query=music"
+								}
+								alt={currentSong.title}
+								className="me-3"
+								width={50}
+								height={50}
+								style={{
+									objectFit: "cover",
+									borderRadius: "4px",
+								}}
+							/>
+							<div>
+								<div
+									className="text-light fw-bold"
+									style={{ fontSize: "0.9rem" }}
 								>
-									X
+									<Link
+										href={{
+											pathname: `/songs/${currentSong?._id}/read`,
+											query: {},
+										}}
+									>
+										{currentSong.title}
+									</Link>
+								</div>
+								<div style={{ fontSize: "0.8rem" }}>
+									{currentSong.user?.name}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="col-md-6">
+						<div className="text-center">
+							<div className="mb-2">
+								<button
+									className="btn btn-orange btn-sm me-2"
+									onClick={previousSong}
+								>
+									<i className="fa-solid fa-backward" aria-hidden />
+								</button>
+								<button
+									className="btn btn-orange btn-sm me-2"
+									onClick={togglePlayPause}
+								>
+									{isPlaying ? (
+										<i className="fa-solid fa-pause" aria-hidden />
+									) : (
+										<i className="fa-solid fa-play" aria-hidden />
+									)}
+								</button>
+								<button className="btn btn-orange btn-sm" onClick={nextSong}>
+									<i className="fa-solid fa-forward" aria-hidden />
 								</button>
 							</div>
+
+							<div className="d-flex align-items-center">
+								<span className="me-2" style={{ fontSize: "0.8rem" }}>
+									{formatTime(currentTime)}
+								</span>
+								<div
+									className="flex-grow-1 bg-secondary"
+									style={{
+										height: "8px",
+										borderRadius: "0.375rem",
+										cursor: "pointer",
+									}}
+									onClick={handleSeek}
+								>
+									<ProgressBar
+										now={(currentTime / duration) * 100}
+										style={{
+											height: "8px",
+											cursor: "pointer",
+											width: `${
+												duration ? (currentTime / duration) * 100 : 0
+											}%`,
+											borderRadius: "0.375rem",
+										}}
+										className="bg-danger"
+										variant="danger"
+									/>
+								</div>
+								<span className="ms-2" style={{ fontSize: "0.8rem" }}>
+									{formatTime(duration)}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div className="col-md-3">
+						<div className="d-flex align-items-center justify-content-end">
+							<span className="me-2" style={{ fontSize: "0.8rem" }}>
+								<i className="fa-solid fa-volume-high" aria-hidden />
+							</span>
+							<input
+								type="range"
+								min="0"
+								max="1"
+								step="0.1"
+								value={volume}
+								onChange={(e) => setVolume(Number.parseFloat(e.target.value))}
+								className="form-range"
+								style={{ width: "100px" }}
+							/>
+							<button
+								className="btn btn-orange btn-sm ms-2"
+								onClick={closePlayer}
+							>
+								X
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		)
+		</div>
 	);
 };
 

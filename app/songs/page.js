@@ -7,21 +7,25 @@ async function getSetting(params) {
 	return res;
 }
 
-async function getShows(params) {
+async function getAlbums(params) {
 	const res = await fetchurl(
-		`/global/playlists${params}&status=published&playlistType=video`,
+		`/global/playlists${params}&status=published&playlistType=audio`,
 		"GET",
 		"no-cache"
 	);
 	return res;
 }
 
-async function getCategories(params) {
-	const res = await fetchurl(`/global/categories${params}`, "GET", "no-cache");
+async function getSongs(params) {
+	const res = await fetchurl(
+		`/global/songs${params}&status=published`,
+		"GET",
+		"no-cache"
+	);
 	return res;
 }
 
-const ShowsIndex = async ({ params, searchParams }) => {
+const SongsIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
@@ -31,47 +35,19 @@ const ShowsIndex = async ({ params, searchParams }) => {
 	const sort = awtdSearchParams.sort || "-createdAt";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
-	const getShowsData = getShows(
+	const getAlbumsData = getAlbums(`?page=1&sort=-createdAt`);
+
+	const getSongsData = getSongs(
 		`?page=${page}&limit=${limit}&sort=${sort}${decrypt}`
 	);
 
-	const animecategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=anime`
-	);
-
-	const tvcategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=tv`
-	);
-
-	const moviecategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=movie`
-	);
-
-	const specialcategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=special`
-	);
-
-	const ovacategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=ova`
-	);
-
-	const videocategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=video`
-	);
-
-	const [shows] = await Promise.all([getShowsData]);
+	const [albums, songs] = await Promise.all([getAlbumsData, getSongsData]);
 
 	return settings?.data?.maintenance === false ? (
 		<List
-			objects={shows}
-			categories={[
-				animecategories,
-				tvcategories,
-				moviecategories,
-				specialcategories,
-				ovacategories,
-				videocategories,
-			]}
+			objects={songs}
+			secondaryobjects={albums}
+			searchedKeyword=""
 			searchParams={awtdSearchParams}
 		/>
 	) : (
@@ -79,4 +55,4 @@ const ShowsIndex = async ({ params, searchParams }) => {
 	);
 };
 
-export default ShowsIndex;
+export default SongsIndex;

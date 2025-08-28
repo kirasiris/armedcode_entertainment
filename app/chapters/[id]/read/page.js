@@ -6,7 +6,7 @@ import { fetchurl } from "@/helpers/fetchurl";
 import ParseHtml from "@/layout/parseHtml";
 import Loading from "@/app/shows/loading";
 import Head from "@/app/head";
-import Player from "@/components/show/player";
+import Player from "@/components/chapter/player";
 import ExportModal from "@/components/global/exportmodal";
 
 async function getChapter(params) {

@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-toastify";
 import ParseHtml from "@/layout/parseHtml";
 import { fetchurl } from "@/helpers/fetchurl";
-import { toast } from "react-toastify";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const AlbumList = ({ objects = [], songs = [] }) => {

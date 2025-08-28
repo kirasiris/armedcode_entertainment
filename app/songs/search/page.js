@@ -1,5 +1,5 @@
 import { fetchurl } from "@/helpers/fetchurl";
-import List from "@/components/album/list";
+import List from "@/components/song/list";
 import ErrorPage from "@/layout/errorpage";
 
 async function getSetting(params) {
@@ -16,14 +16,20 @@ async function getAlbums(params) {
 	return res;
 }
 
-async function getCategories(params) {
-	const res = await fetchurl(`/global/categories${params}`, "GET", "no-cache");
+async function getSongs(params) {
+	const res = await fetchurl(
+		`/global/songs${params}&status=published`,
+		"GET",
+		"no-cache"
+	);
 	return res;
 }
 
-const AlbumsSearchIndex = async ({ params, searchParams }) => {
+const SongsSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 	const keyword = awtdSearchParams.keyword;
+	const resourceId = awtdSearchParams.resourceId;
+
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
 
 	const page = awtdSearchParams.page || 1;
@@ -31,26 +37,21 @@ const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	const sort = awtdSearchParams.sort || "-createdAt";
 	const keywordQuery =
 		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
-	const categoryQuery =
-		awtdSearchParams.category !== "" && awtdSearchParams.category !== undefined
-			? `&category=${awtdSearchParams.category}`
-			: "";
+	const resourceQuery = resourceId ? `&resourceId=${resourceId}` : "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
-	const getAlbumsData = getAlbums(
-		`?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}${categoryQuery}${decrypt}`
+	const getAlbumsData = getAlbums(`?page=1&sort=-createdAt`);
+
+	const getSongsData = getSongs(
+		`?page=${page}&limit=${limit}&sort=${sort}${resourceQuery}${keywordQuery}${decrypt}`
 	);
 
-	const albumcategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=album`
-	);
-
-	const [albums] = await Promise.all([getAlbumsData]);
+	const [albums, songs] = await Promise.all([getAlbumsData, getSongsData]);
 
 	return settings?.data?.maintenance === false ? (
 		<List
-			objects={albums}
-			secondaryobjects={[albumcategories]}
+			objects={songs}
+			secondaryobjects={albums}
 			searchedKeyword={keyword}
 			searchParams={awtdSearchParams}
 		/>
@@ -59,4 +60,4 @@ const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	);
 };
 
-export default AlbumsSearchIndex;
+export default SongsSearchIndex;

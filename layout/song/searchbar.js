@@ -6,20 +6,20 @@ const SearchBar = ({ objects = [] }) => {
 	const router = useRouter();
 	const [searchParams, setSearchParams] = useState({
 		keyword: "",
-		categoryId: "",
+		albumId: "",
 		sort: "-createdAt",
 	});
 
-	const { keyword, categoryId, sort } = searchParams;
+	const { keyword, albumId, sort } = searchParams;
 
 	const keywordQuery =
 		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
-	const categoryQuery = categoryId ? `&category=${categoryId}` : "";
+	const albumQuery = albumId ? `&resourceId=${albumId}` : "";
 
 	const searchData = async (e) => {
 		e.preventDefault();
 		router.push(
-			`/albums/search?page=1&limit=36&sort=${sort}${keywordQuery}${categoryQuery}`
+			`/songs/search?page=1&limit=36&sort=${sort}${keywordQuery}${albumQuery}`
 		);
 	};
 
@@ -43,21 +43,21 @@ const SearchBar = ({ objects = [] }) => {
 			</div>
 			<div className="col">
 				<select
-					id="categoryId"
-					name="categoryId"
-					value={categoryId}
+					id="albumId"
+					name="albumId"
+					value={albumId}
 					onChange={(e) => {
 						setSearchParams({
 							...searchParams,
-							categoryId: e.target.value,
+							albumId: e.target.value,
 						});
 					}}
 					className="form-control"
 				>
-					<option value="">Category</option>
-					{objects[0]?.data?.map((category, index) => (
-						<option key={category._id} value={category._id}>
-							{category.title}
+					<option value="">All Albums</option>
+					{objects?.data?.map((show) => (
+						<option key={show?._id} value={show?._id}>
+							{show?.title}
 						</option>
 					))}
 				</select>
@@ -79,6 +79,8 @@ const SearchBar = ({ objects = [] }) => {
 					<option value="title">Title</option>
 					<option value="-createdAt">ASC</option>
 					<option value="createdAt">DESC</option>
+					<option value="-averageRating">Highest Rated</option>
+					<option value="averageRating">Lowest Rated</option>
 				</select>
 			</div>
 			<div className="col">

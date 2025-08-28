@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { formatDateWithoutTime } from "befree-utilities";
+import Image from "next/image";
 import { fetchurl } from "@/helpers/fetchurl";
 import ParseHtml from "@/layout/parseHtml";
 import Loading from "@/app/shows/loading";
 import Head from "@/app/head";
 import ExportModal from "@/components/global/exportmodal";
 import LocalSongPlayer from "@/layout/localsongplayer";
-import Image from "next/image";
 
 async function getSong(params) {
 	const res = await fetchurl(`/global/songs${params}`, "GET", "no-cache");

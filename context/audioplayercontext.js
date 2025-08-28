@@ -40,6 +40,11 @@ function audioPlayerReducer(state, action) {
 			return { ...state, duration: action.payload };
 		case "SET_VOLUME":
 			return { ...state, volume: action.payload };
+		case "CLOSE_PLAYER":
+			return {
+				...initialState,
+				volume: state.volume, // Keep volume setting
+			};
 		case "NEXT_SONG":
 			const nextIndex = state.currentIndex + 1;
 			if (nextIndex < state.playlist.length) {
@@ -84,7 +89,11 @@ export function AudioPlayerProvider({ children }) {
 	};
 
 	const closePlayer = () => {
-		dispatch({ type: "SET_PLAYING", payload: false });
+		if (audioRef.current) {
+			audioRef.current.pause();
+			audioRef.current.currentTime = 0;
+		}
+		dispatch({ type: "CLOSE_PLAYER" });
 	};
 
 	const togglePlayPause = () => {

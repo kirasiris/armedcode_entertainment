@@ -1,6 +1,6 @@
 "use client";
-import { useAudioPlayer } from "@/context/audioplayercontext";
 import Link from "next/link";
+import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const Single = ({ object = {}, objects = [], index = 0 }) => {
 	const { playSong, togglePlayPause, currentSong, isPlaying } =

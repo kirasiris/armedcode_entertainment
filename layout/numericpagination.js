@@ -17,6 +17,7 @@ const NumericPagination = ({
 	const random = searchParams.random || "";
 	const email = searchParams.email || "";
 	const posttype = searchParams.postType || "";
+	const resourceId = searchParams.resourceId || "";
 
 	// Initialize router
 	const router = useRouter();
@@ -33,8 +34,10 @@ const NumericPagination = ({
 	const randomQuery = random === "true" ? "&random=true" : "";
 	// If query email is found
 	const emailQuery = email ? `&email=${email}` : "";
+	// If resourceId is found
+	const resourceQuery = resourceId ? `&resourceId=${resourceId}` : "";
 	// Add them all together
-	const newParams = `&sort=${sort}${postTypeQuery}${keywordQuery}${randomQuery}${decryptQuery}${emailQuery}`;
+	const newParams = `&sort=${sort}${postTypeQuery}${keywordQuery}${randomQuery}${decryptQuery}${emailQuery}${resourceQuery}`;
 	let pageNo;
 	if (page <= Number(totalPages)) {
 		pageNo = page;
