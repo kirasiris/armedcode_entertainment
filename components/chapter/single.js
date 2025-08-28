@@ -5,12 +5,7 @@ import Link from "next/link";
 import Loading from "@/app/shows/loading";
 import ParseHtml from "@/layout/parseHtml";
 
-const Single = ({
-	object = {},
-	fullWidth = false,
-	imageWidth = "415",
-	imageHeight = "207",
-}) => {
+const Single = ({ object = {} }) => {
 	return (
 		<Suspense fallback={<Loading />}>
 			<article
@@ -50,7 +45,7 @@ const Single = ({
 					</div>
 					<div className="card-body">
 						<span className="badge text-bg-light text-capitalize">
-							{object.category[0].title || "Undefined"}
+							{/* {object.category[0].title || "Undefined"} */}
 						</span>
 						<h5>{object.title}</h5>
 						<ParseHtml text={object.excerpt} classList="card-text" />
@@ -58,7 +53,7 @@ const Single = ({
 					<div className="card-footer">
 						<Link
 							href={{
-								pathname: `/shows/${object._id}/${object.slug}`,
+								pathname: `/chapters/${object._id}/read`,
 								query: {},
 							}}
 							className="btn btn-dark btn-sm w-100"

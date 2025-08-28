@@ -122,7 +122,7 @@ const ReadSong = async ({ params, searchParams }) => {
 							</div>
 						</div>
 						<div className="col-lg-12">
-							<LocalSongPlayer song={song?.data} />
+							<LocalSongPlayer object={song?.data} />
 						</div>
 					</div>
 					<div className="row">

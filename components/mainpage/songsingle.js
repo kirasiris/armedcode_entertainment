@@ -36,9 +36,9 @@ const SongSingle = ({ object = {}, objects = [], index = 0 }) => {
 								}
 							>
 								{isCurrentSong && isPlaying ? (
-									<i className="fa-solid fa-pause" />
+									<i className="fa-solid fa-pause" aria-hidden />
 								) : (
-									<i className="fa-solid fa-play" />
+									<i className="fa-solid fa-play" aria-hidden />
 								)}
 							</button>
 						</div>

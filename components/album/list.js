@@ -6,14 +6,14 @@ import SearchBar from "@/layout/album/searchbar";
 
 const List = ({
 	objects = [],
-	categories = [],
+	secondaryobjects = [],
 	searchedKeyword = "",
 	searchParams = {},
 }) => {
 	return (
 		<section className="bg-dark text-bg-dark py-5">
 			<div className="container">
-				<SearchBar objects={categories} />
+				<SearchBar objects={secondaryobjects} />
 				{objects?.data?.length > 0 ? (
 					<div className="row g-4">
 						{objects.data?.map((blog) => (

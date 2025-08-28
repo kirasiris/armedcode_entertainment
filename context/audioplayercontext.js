@@ -83,6 +83,10 @@ export function AudioPlayerProvider({ children }) {
 		dispatch({ type: "SET_PLAYING", payload: true });
 	};
 
+	const closePlayer = () => {
+		dispatch({ type: "SET_PLAYING", payload: false });
+	};
+
 	const togglePlayPause = () => {
 		if (audioRef.current) {
 			if (state.isPlaying) {
@@ -110,6 +114,7 @@ export function AudioPlayerProvider({ children }) {
 		...state,
 		audioRef,
 		playSong,
+		closePlayer,
 		togglePlayPause,
 		nextSong,
 		previousSong,

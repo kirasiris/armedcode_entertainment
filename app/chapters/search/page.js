@@ -25,7 +25,7 @@ async function getVideos(params) {
 	return res;
 }
 
-const ChaptersIndex = async ({ params, searchParams }) => {
+const ChaptersSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 
 	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
@@ -33,28 +33,30 @@ const ChaptersIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
+	const resourceId = awtdSearchParams.resourceId
+		? `&resourceId=${awtdSearchParams.resourceId}`
+		: "";
+	const keyword = awtdSearchParams.keyword || "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
 	const getShowsData = getShows(`?page=1&sort=-createdAt`);
 
 	const getVideosData = getVideos(
-		`?page=${page}&limit=${limit}&sort=${sort}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${resourceId}&keyword=${keyword}${decrypt}`
 	);
 
 	const [shows, videos] = await Promise.all([getShowsData, getVideosData]);
 
 	return settings?.data?.maintenance === false ? (
-		<>
-			<List
-				objects={videos}
-				secondaryobjects={shows}
-				searchedKeyword=""
-				searchParams={awtdSearchParams}
-			/>
-		</>
+		<List
+			objects={videos}
+			secondaryobjects={shows}
+			searchedKeyword={keyword}
+			searchParams={awtdSearchParams}
+		/>
 	) : (
 		<ErrorPage />
 	);
 };
 
-export default ChaptersIndex;
+export default ChaptersSearchIndex;

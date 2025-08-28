@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Card, Button, ProgressBar } from "react-bootstrap";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
-const LocalSongPlayer = ({ song }) => {
+const LocalSongPlayer = ({ object }) => {
 	const {
 		currentSong,
 		isPlaying,
@@ -26,7 +26,7 @@ const LocalSongPlayer = ({ song }) => {
 	const [originalGlobalVolume, setOriginalGlobalVolume] = useState(null);
 
 	// Check if this is the same song as the global player
-	const isSameSong = currentSong?._id === song._id;
+	const isSameSong = currentSong?._id === object?._id;
 
 	useEffect(() => {
 		if (isSameSong && globalAudioRef.current) {
@@ -183,7 +183,7 @@ const LocalSongPlayer = ({ song }) => {
 				<h5 className="text-light mb-3">Song Player</h5>
 				<audio
 					ref={localAudioRef}
-					src={song.files?.audio_url?.location?.secure_location}
+					src={object?.files?.audio_url?.location?.secure_location}
 					preload="metadata"
 				/>
 				<div className="d-flex align-items-center gap-3 mb-3">

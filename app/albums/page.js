@@ -44,7 +44,8 @@ const AlbumsIndex = async ({ params, searchParams }) => {
 	return settings?.data?.maintenance === false ? (
 		<List
 			objects={albums}
-			categories={[albumcategories]}
+			secondaryobjects={[albumcategories]}
+			searchedKeyword=""
 			searchParams={awtdSearchParams}
 		/>
 	) : (
