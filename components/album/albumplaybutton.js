@@ -10,8 +10,9 @@ const AlbumPlayButton = ({ objects }) => {
 		objects?.some((song) => song._id === currentSong?._id) && isPlaying;
 
 	const handlePlayAlbum = () => {
-		if (objects?.length === 0)
+		if (objects?.length === 0 || objects === undefined) {
 			toast.error("Not possible to play album", "bottom");
+		}
 		if (objects?.length > 0) playSong(objects[0], objects, 0);
 	};
 
