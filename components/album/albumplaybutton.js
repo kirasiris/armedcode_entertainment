@@ -6,7 +6,7 @@ const AlbumPlayButton = ({ objects }) => {
 	const { playSong, currentSong, isPlaying } = useAudioPlayer();
 
 	const isAlbumPlaying =
-		objects.some((song) => song._id === currentSong?._id) && isPlaying;
+		objects?.some((song) => song._id === currentSong?._id) && isPlaying;
 
 	const handlePlayAlbum = () => {
 		if (objects.length > 0) {
