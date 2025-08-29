@@ -81,8 +81,8 @@ const SearchBar = ({ objects = [], secondaryobjects = [] }) => {
 					<option value="createdAt">DESC</option>
 					<option value="-averageRating">Highest Rated</option>
 					<option value="averageRating">Lowest Rated</option>
-					<option value="views">Most Viewed</option>
-					<option value="-views">Less Viewed</option>
+					<option value="-views">Most Viewed</option>
+					<option value="views">Less Viewed</option>
 				</select>
 			</div>
 			<div className="col">
