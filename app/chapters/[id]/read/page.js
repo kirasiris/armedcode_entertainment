@@ -20,9 +20,20 @@ async function getChapters(params) {
 	return res;
 }
 
+async function updateViews(params) {
+	const res = await fetchurl(
+		`/global/videos${params}/addview`,
+		"PUT",
+		"no-cache"
+	);
+	return res;
+}
+
 const ReadChapter = async ({ params, searchParams }) => {
 	const awtdParams = await params;
 	const awtdSearchParams = await searchParams;
+
+	await updateViews(`/${awtdParams.id}`);
 
 	const chapter = await getChapter(`/${awtdParams.id}`);
 	const chapters = await getChapters(
