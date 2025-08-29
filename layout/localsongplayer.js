@@ -28,6 +28,25 @@ const LocalSongPlayer = ({ object }) => {
 	// Check if this is the same song as the global player
 	const isSameSong = currentSong?._id === object?._id;
 
+	// Synchronize volume in both the localsongplayer and globalaudioplayer if on same page
+	useEffect(() => {
+		if (isSameSong) {
+			// When it's the same song, sync local volume with global volume
+			setLocalVolume(volume);
+			if (localAudioRef.current) {
+				localAudioRef.current.volume = volume;
+			}
+		}
+	}, [isSameSong, volume]);
+
+	useEffect(() => {
+		// Set initial local volume to match global volume
+		setLocalVolume(volume);
+		if (localAudioRef.current) {
+			localAudioRef.current.volume = volume;
+		}
+	}, []); // Only run on mount
+
 	useEffect(() => {
 		if (isSameSong && globalAudioRef.current) {
 			// Store original volume if not already stored
