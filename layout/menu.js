@@ -49,6 +49,17 @@ const Menu = ({
 								Home
 							</Link>
 						</li>
+						<li className="nav-item">
+							<Link
+								href={{
+									pathname: `${canonical}/about`,
+									query: {},
+								}}
+								className={`nav-link ${isActive(`${canonical}/about`)}`}
+							>
+								About
+							</Link>
+						</li>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
