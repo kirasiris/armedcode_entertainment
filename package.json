@@ -16,16 +16,18 @@
   "keywords": [
     "javascript",
     "nextjs",
-    "llc",
-    "arms",
-    "limited-liability-companies",
     "anime",
     "shows",
     "music",
     "albums",
     "cd-albums",
     "chapters",
-    "episodes"
+    "episodes",
+    "entertainment",
+    "entertainment-website",
+    "reactjs",
+    "app-router",
+    "armedcodellc"
   ],
   "author": "Kevin Uriel Fonseca",
   "license": "MIT",
