@@ -50,21 +50,6 @@ const Menu = ({
 							</Link>
 						</li>
 					</Nav>
-					<Nav as="ul">
-						<li className="nav-item">
-							<Link
-								href={{
-									pathname: `${canonical}/advancedsearch`,
-									query: {},
-								}}
-								className={`btn btn-light btn-sm w-100 ${isActive(
-									`${canonical}/search`
-								)}`}
-							>
-								Advanced Search
-							</Link>
-						</li>
-					</Nav>
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>

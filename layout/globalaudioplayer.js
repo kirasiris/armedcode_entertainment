@@ -13,12 +13,16 @@ const GlobalAudioPlayer = () => {
 		currentTime,
 		duration,
 		volume,
+		isShuffled,
+		isRepeating,
 		audioRef,
-		closePlayer,
 		togglePlayPause,
 		nextSong,
 		previousSong,
 		setVolume,
+		closePlayer,
+		toggleShuffle,
+		toggleRepeat,
 		dispatch,
 	} = useAudioPlayer();
 
@@ -35,8 +39,13 @@ const GlobalAudioPlayer = () => {
 		};
 
 		const handleEnded = () => {
-			dispatch({ type: "SET_PLAYING", payload: false });
-			nextSong();
+			if (isRepeating && audio) {
+				audio.currentTime = 0;
+				audio.play();
+			} else {
+				dispatch({ type: "SET_PLAYING", payload: false });
+				nextSong();
+			}
 		};
 
 		audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -48,7 +57,7 @@ const GlobalAudioPlayer = () => {
 			audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
 			audio.removeEventListener("ended", handleEnded);
 		};
-	}, [audioRef, dispatch, nextSong]);
+	}, [audioRef, dispatch, nextSong, isRepeating]);
 
 	useEffect(() => {
 		if (currentSong && audioRef.current) {
@@ -136,6 +145,14 @@ const GlobalAudioPlayer = () => {
 						<div className="text-center">
 							<div className="mb-2">
 								<button
+									className={`btn btn-orange btn-sm me-2 ${
+										isShuffled ? "active" : ""
+									}`}
+									onClick={toggleShuffle}
+								>
+									<i className="fa-solid fa-shuffle" aria-hidden />
+								</button>
+								<button
 									className="btn btn-orange btn-sm me-2"
 									onClick={previousSong}
 								>
@@ -151,8 +168,19 @@ const GlobalAudioPlayer = () => {
 										<i className="fa-solid fa-play" aria-hidden />
 									)}
 								</button>
-								<button className="btn btn-orange btn-sm" onClick={nextSong}>
+								<button
+									className="btn btn-orange btn-sm me-2"
+									onClick={nextSong}
+								>
 									<i className="fa-solid fa-forward" aria-hidden />
+								</button>
+								<button
+									className={`btn btn-orange btn-sm ${
+										isRepeating ? "active" : ""
+									}`}
+									onClick={toggleRepeat}
+								>
+									<i className="fa-solid fa-repeat" aria-hidden />
 								</button>
 							</div>
 

@@ -11,10 +11,14 @@ const LocalSongPlayer = ({ object }) => {
 		currentTime,
 		duration,
 		volume,
+		isShuffled,
+		isRepeating,
 		audioRef: globalAudioRef,
 		playSong,
 		togglePlayPause,
 		setVolume,
+		toggleShuffle,
+		toggleRepeat,
 		dispatch,
 	} = useAudioPlayer();
 
@@ -104,19 +108,30 @@ const LocalSongPlayer = ({ object }) => {
 				setLocalIsPlaying(false);
 			};
 
+			const handleEnded = () => {
+				if (isRepeating && audio) {
+					audio.currentTime = 0;
+					audio.play();
+				} else {
+					setLocalIsPlaying(false);
+				}
+			};
+
 			audio.addEventListener("timeupdate", handleTimeUpdate);
 			audio.addEventListener("loadedmetadata", handleLoadedMetadata);
 			audio.addEventListener("play", handlePlay);
 			audio.addEventListener("pause", handlePause);
+			audio.addEventListener("ended", handleEnded);
 
 			return () => {
 				audio.removeEventListener("timeupdate", handleTimeUpdate);
 				audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
 				audio.removeEventListener("play", handlePlay);
 				audio.removeEventListener("pause", handlePause);
+				audio.removeEventListener("ended", handleEnded);
 			};
 		}
-	}, [isSameSong, dispatch, globalAudioRef]);
+	}, [isSameSong, dispatch, globalAudioRef, isRepeating]);
 
 	useEffect(() => {
 		if (isSameSong && localAudioRef.current && globalAudioRef.current) {
@@ -193,7 +208,8 @@ const LocalSongPlayer = ({ object }) => {
 	};
 
 	const formatTime = (time) => {
-		if (!time) return "0:00";
+		// if (!time) return "0:00";
+		if (isNaN(time)) return "0:00";
 		const minutes = Math.floor(time / 60);
 		const seconds = Math.floor(time % 60);
 		return `${minutes}:${seconds.toString().padStart(2, "0")}`;
@@ -214,17 +230,34 @@ const LocalSongPlayer = ({ object }) => {
 					preload="metadata"
 				/>
 				<div className="d-flex align-items-center gap-3 mb-3">
-					<Button
-						variant={currentDisplayPlaying ? "danger" : "orange"}
+					<button
+						className={`btn btn-orange btn-lg me-1 ${
+							isShuffled ? "active" : ""
+						}`}
+						onClick={toggleShuffle}
+					>
+						<i className="fa-solid fa-shuffle" aria-hidden />
+					</button>
+					<button
+						className={`btn btn-${
+							currentDisplayPlaying ? "danger" : "orange"
+						} btn-lg`}
 						onClick={handlePlayPause}
-						size="lg"
 					>
 						{currentDisplayPlaying ? (
 							<i className="fa-solid fa-pause" aria-hidden />
 						) : (
 							<i className="fa-solid fa-play" aria-hidden />
 						)}
-					</Button>
+					</button>
+					<button
+						className={`btn btn-orange btn-lg me-1 ${
+							isRepeating ? "active" : ""
+						}`}
+						onClick={toggleRepeat}
+					>
+						<i className="fa-solid fa-repeat" aria-hidden />
+					</button>
 					<div className="flex-grow-1">
 						<div className="d-flex justify-content-between text-light small mb-1">
 							<span>{formatTime(currentDisplayTime)}</span>

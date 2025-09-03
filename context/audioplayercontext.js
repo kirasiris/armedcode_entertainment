@@ -18,6 +18,9 @@ const initialState = {
 	volume: 1,
 	playlist: [],
 	currentIndex: -1,
+	isShuffled: false,
+	isRepeating: false,
+	originalPlaylist: [], // Store original order for shuffle toggle
 };
 
 function audioPlayerReducer(state, action) {
@@ -45,6 +48,45 @@ function audioPlayerReducer(state, action) {
 				...initialState,
 				volume: state.volume, // Keep volume setting
 			};
+		case "TOGGLE_SHUFFLE":
+			if (
+				!state.playlist ||
+				!Array.isArray(state.playlist) ||
+				state.playlist.length === 0
+			) {
+				return state; // Don't shuffle if no valid playlist
+			}
+			if (!action.payload) {
+				// Turn off shuffle - restore original order
+				return {
+					...state,
+					isShuffled: false,
+					playlist:
+						state.originalPlaylist && Array.isArray(state.originalPlaylist)
+							? state.originalPlaylist
+							: state.playlist,
+					currentIndex:
+						state.originalPlaylist && Array.isArray(state.originalPlaylist)
+							? state.originalPlaylist.findIndex(
+									(song) => song._id === state.currentSong?._id
+							  )
+							: state.currentIndex,
+				};
+			} else {
+				// Turn on shuffle - randomize playlist
+				const shuffled = [...state.playlist].sort(() => Math.random() - 0.5);
+				return {
+					...state,
+					isShuffled: true,
+					originalPlaylist: state.playlist,
+					playlist: shuffled,
+					currentIndex: shuffled.findIndex(
+						(song) => song._id === state.currentSong?._id
+					),
+				};
+			}
+		case "TOGGLE_REPEAT":
+			return { ...state, isRepeating: action.payload };
 		case "NEXT_SONG":
 			const nextIndex = state.currentIndex + 1;
 			if (nextIndex < state.playlist.length) {
@@ -52,6 +94,12 @@ function audioPlayerReducer(state, action) {
 					...state,
 					currentSong: state.playlist[nextIndex],
 					currentIndex: nextIndex,
+				};
+			} else if (state.isRepeating && state.playlist.length > 0) {
+				return {
+					...state,
+					currentSong: state.playlist[0],
+					currentIndex: 0,
 				};
 			}
 			return state;
@@ -62,6 +110,13 @@ function audioPlayerReducer(state, action) {
 					...state,
 					currentSong: state.playlist[prevIndex],
 					currentIndex: prevIndex,
+				};
+			} else if (state.isRepeating && state.playlist.length > 0) {
+				const lastIndex = state.playlist.length - 1;
+				return {
+					...state,
+					currentSong: state.playlist[lastIndex],
+					currentIndex: lastIndex,
 				};
 			}
 			return state;
@@ -88,14 +143,6 @@ export function AudioPlayerProvider({ children }) {
 		dispatch({ type: "SET_PLAYING", payload: true });
 	};
 
-	const closePlayer = () => {
-		if (audioRef.current) {
-			audioRef.current.pause();
-			audioRef.current.currentTime = 0;
-		}
-		dispatch({ type: "CLOSE_PLAYER" });
-	};
-
 	const togglePlayPause = () => {
 		if (audioRef.current) {
 			if (state.isPlaying) {
@@ -119,15 +166,35 @@ export function AudioPlayerProvider({ children }) {
 		dispatch({ type: "SET_VOLUME", payload: volume });
 	};
 
+	const closePlayer = () => {
+		if (audioRef.current) {
+			audioRef.current.pause();
+			audioRef.current.currentTime = 0;
+		}
+		dispatch({ type: "CLOSE_PLAYER" });
+	};
+
+	const toggleShuffle = () => {
+		const newShuffleState = !state.isShuffled;
+		dispatch({ type: "TOGGLE_SHUFFLE", payload: newShuffleState });
+	};
+
+	const toggleRepeat = () => {
+		const newRepeatState = !state.isRepeating;
+		dispatch({ type: "TOGGLE_REPEAT", payload: newRepeatState });
+	};
+
 	const value = {
 		...state,
 		audioRef,
 		playSong,
-		closePlayer,
 		togglePlayPause,
 		nextSong,
 		previousSong,
 		setVolume,
+		closePlayer,
+		toggleShuffle,
+		toggleRepeat,
 		dispatch,
 	};
 
