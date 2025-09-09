@@ -75,6 +75,7 @@ const GlobalAudioPlayer = () => {
 				audioRef.current.play();
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentSong, audioRef]);
 
 	useEffect(() => {

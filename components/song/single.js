@@ -47,7 +47,7 @@ const Single = ({ object = {}, objects = [], index = 0 }) => {
 							{object.onairstatus}
 						</span>
 						<Image
-							src={object.files?.avatar.location.secure_location}
+							src={object.files?.avatar?.location?.secure_location}
 							className="card-img-top"
 							alt="..."
 							width={356}

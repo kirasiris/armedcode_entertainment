@@ -52,6 +52,7 @@ const LocalSongPlayer = ({ object }) => {
 		if (localAudioRef.current) {
 			localAudioRef.current.volume = volume;
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // Only run on mount
 
 	useEffect(() => {
@@ -75,6 +76,7 @@ const LocalSongPlayer = ({ object }) => {
 		// Cleanup: restore volume when component unmounts
 		return () => {
 			if (originalGlobalVolume !== null && globalAudioRef.current) {
+				// eslint-disable-next-line react-hooks/exhaustive-deps
 				globalAudioRef.current.volume = originalGlobalVolume;
 			}
 		};
