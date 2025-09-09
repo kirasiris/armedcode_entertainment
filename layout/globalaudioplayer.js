@@ -15,6 +15,8 @@ const GlobalAudioPlayer = () => {
 		volume,
 		isShuffled,
 		isRepeating,
+		playlist,
+		currentIndex,
 		audioRef,
 		togglePlayPause,
 		nextSong,
@@ -43,8 +45,14 @@ const GlobalAudioPlayer = () => {
 				audio.currentTime = 0;
 				audio.play();
 			} else {
-				dispatch({ type: "SET_PLAYING", payload: false });
-				nextSong();
+				const nextIndex = currentIndex + 1;
+				if (nextIndex < playlist.length) {
+					// Auto-play next song
+					nextSong();
+				} else {
+					// No more songs, stop playing
+					dispatch({ type: "SET_PLAYING", payload: false });
+				}
 			}
 		};
 
@@ -57,7 +65,7 @@ const GlobalAudioPlayer = () => {
 			audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
 			audio.removeEventListener("ended", handleEnded);
 		};
-	}, [audioRef, dispatch, nextSong, isRepeating]);
+	}, [audioRef, dispatch, nextSong, isRepeating, playlist, currentIndex]);
 
 	useEffect(() => {
 		if (currentSong && audioRef.current) {

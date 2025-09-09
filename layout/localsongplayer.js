@@ -13,12 +13,15 @@ const LocalSongPlayer = ({ object }) => {
 		volume,
 		isShuffled,
 		isRepeating,
+		playlist,
+		currentIndex,
 		audioRef: globalAudioRef,
 		playSong,
 		togglePlayPause,
 		setVolume,
 		toggleShuffle,
 		toggleRepeat,
+		nextSong,
 		dispatch,
 	} = useAudioPlayer();
 
@@ -109,9 +112,16 @@ const LocalSongPlayer = ({ object }) => {
 			};
 
 			const handleEnded = () => {
-				if (isRepeating && audio) {
+				if (isSameSong && isRepeating && audio) {
 					audio.currentTime = 0;
 					audio.play();
+				} else if (isSameSong) {
+					setLocalIsPlaying(false);
+					const nextIndex = currentIndex + 1;
+					if (nextIndex < playlist.length) {
+						// Let global player continue to next song
+						nextSong();
+					}
 				} else {
 					setLocalIsPlaying(false);
 				}
@@ -131,7 +141,15 @@ const LocalSongPlayer = ({ object }) => {
 				audio.removeEventListener("ended", handleEnded);
 			};
 		}
-	}, [isSameSong, dispatch, globalAudioRef, isRepeating]);
+	}, [
+		isSameSong,
+		dispatch,
+		globalAudioRef,
+		isRepeating,
+		playlist,
+		currentIndex,
+		nextSong,
+	]);
 
 	useEffect(() => {
 		if (isSameSong && localAudioRef.current && globalAudioRef.current) {

@@ -94,12 +94,14 @@ function audioPlayerReducer(state, action) {
 					...state,
 					currentSong: state.playlist[nextIndex],
 					currentIndex: nextIndex,
+					isPlaying: true, // Auto-play the next song when moving to it
 				};
 			} else if (state.isRepeating && state.playlist.length > 0) {
 				return {
 					...state,
 					currentSong: state.playlist[0],
 					currentIndex: 0,
+					isPlaying: true, // Auto-play when repeating playlist
 				};
 			}
 			return state;
