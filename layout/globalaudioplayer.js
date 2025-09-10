@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ProgressBar } from "react-bootstrap";
@@ -70,12 +70,11 @@ const GlobalAudioPlayer = () => {
 	useEffect(() => {
 		if (currentSong && audioRef.current) {
 			audioRef.current.src =
-				currentSong?.files?.audio_url?.location?.secure_location;
+				currentSong.files?.audio_url?.location?.secure_location;
 			if (isPlaying) {
 				audioRef.current.play();
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentSong, audioRef]);
 
 	useEffect(() => {
@@ -116,38 +115,44 @@ const GlobalAudioPlayer = () => {
 				<div className="row align-items-center">
 					<div className="col-md-3">
 						<div className="d-flex align-items-center">
-							<Image
-								src={
-									currentSong.files?.avatar?.location?.secure_location ||
-									"/placeholder.svg?height=50&width=50&query=music"
-								}
-								alt={currentSong.title}
-								className="me-3"
-								width={50}
-								height={50}
-								style={{
-									objectFit: "cover",
-									borderRadius: "4px",
-								}}
-							/>
-							<div>
-								<div
-									className="text-light fw-bold"
-									style={{ fontSize: "0.9rem" }}
-								>
-									<Link
-										href={{
-											pathname: `/songs/${currentSong?._id}/read`,
-											query: {},
-										}}
-									>
-										{currentSong.title}
-									</Link>
-								</div>
-								<div style={{ fontSize: "0.8rem" }}>
-									{currentSong.user?.name}
+							<div className="album-image-container me-3">
+								<Image
+									src={
+										currentSong.files?.avatar?.location?.secure_location ||
+										"/placeholder.svg?height=50&width=50&query=music"
+									}
+									alt={currentSong.title}
+									className="me-3"
+									width={50}
+									height={50}
+									style={{
+										objectFit: "cover",
+										borderRadius: "4px",
+									}}
+								/>
+								<div className="album-image-overlay">
+									<i
+										className={`fa fa-compact-disc cd-icon ${
+											!isPlaying ? "paused" : ""
+										}`}
+										aria-hidden
+									/>
 								</div>
 							</div>
+							<div
+								className="text-light fw-bold"
+								style={{ fontSize: "0.9rem" }}
+							>
+								<Link
+									href={{
+										pathname: `/songs/${currentSong?._id}/read`,
+										query: {},
+									}}
+								>
+									{currentSong.title}
+								</Link>
+							</div>
+							<div style={{ fontSize: "0.8rem" }}>{currentSong.user?.name}</div>
 						</div>
 					</div>
 					<div className="col-md-6">
@@ -162,7 +167,7 @@ const GlobalAudioPlayer = () => {
 									<i className="fa-solid fa-shuffle" aria-hidden />
 								</button>
 								<button
-									className="btn btn-orange btn-sm me-2"
+									className="btn btn-orange btn-sm me-2 btn-long-press"
 									onClick={previousSong}
 								>
 									<i className="fa-solid fa-backward" aria-hidden />
@@ -178,7 +183,7 @@ const GlobalAudioPlayer = () => {
 									)}
 								</button>
 								<button
-									className="btn btn-orange btn-sm me-2"
+									className="btn btn-orange btn-sm me-2 btn-long-press"
 									onClick={nextSong}
 								>
 									<i className="fa-solid fa-forward" aria-hidden />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Button, ProgressBar } from "react-bootstrap";
+import { ProgressBar } from "react-bootstrap";
 import { useAudioPlayer } from "@/context/audioplayercontext";
 
 const LocalSongPlayer = ({ object }) => {
@@ -22,6 +22,7 @@ const LocalSongPlayer = ({ object }) => {
 		toggleShuffle,
 		toggleRepeat,
 		nextSong,
+		previousSong,
 		dispatch,
 	} = useAudioPlayer();
 
@@ -34,6 +35,13 @@ const LocalSongPlayer = ({ object }) => {
 
 	// Check if this is the same song as the global player
 	const isSameSong = currentSong?._id === object?._id;
+
+	useEffect(() => {
+		if (!isSameSong && localIsPlaying && localAudioRef.current) {
+			localAudioRef.current.pause();
+			setLocalIsPlaying(false);
+		}
+	}, [isSameSong, localIsPlaying]);
 
 	// Synchronize volume in both the localsongplayer and globalaudioplayer if on same page
 	useEffect(() => {
@@ -187,6 +195,7 @@ const LocalSongPlayer = ({ object }) => {
 	const handlePlayPause = () => {
 		if (localAudioRef.current) {
 			if (isSameSong) {
+				// Only allow play/pause when it's the same song as global player
 				togglePlayPause();
 			} else {
 				if (localIsPlaying) {
@@ -202,6 +211,16 @@ const LocalSongPlayer = ({ object }) => {
 			}
 		}
 	};
+
+	// const handlePlayPause = () => {
+	// 	if (isSameSong) {
+	// 		// Only allow play/pause when it's the same song as global player
+	// 		togglePlayPause();
+	// 	} else {
+	// 		// Switch global player to this song first, then play
+	// 		playSong(object, [object], 0);
+	// 	}
+	// };
 
 	const handleSeek = (e) => {
 		const audio = isSameSong ? globalAudioRef.current : localAudioRef.current;
@@ -243,7 +262,15 @@ const LocalSongPlayer = ({ object }) => {
 	return (
 		<div className="card bg-orange text-bg-dark my-3">
 			<div className="card-body">
-				<h5 className="text-light mb-3">Song Player</h5>
+				<h5 className="text-light mb-3">
+					<i
+						className={`fa fa-compact-disc cd-icon me-2 ${
+							!currentDisplayPlaying ? "paused" : ""
+						}`}
+						aria-hidden
+					/>
+					Song Player
+				</h5>
 				<audio
 					ref={localAudioRef}
 					src={object?.files?.audio_url?.location?.secure_location}

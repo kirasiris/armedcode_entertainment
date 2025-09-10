@@ -57,6 +57,70 @@ GLOBAL PLAYER
 	padding: 20px;
 }
 
+/* Rotating CD icon animations and hover effects */
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.cd-icon {
+	animation: spin 2s linear infinite;
+	color: #fff;
+	font-size: 1.2rem;
+}
+
+.cd-icon.paused {
+	animation-play-state: paused;
+}
+
+.album-image-container {
+	position: relative;
+	display: inline-block;
+}
+
+.album-image-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	border-radius: 4px;
+}
+
+.album-image-container:hover .album-image-overlay {
+	opacity: 1;
+}
+
+.album-image-overlay .cd-icon {
+	font-size: 2rem;
+	color: #ffffff;
+}
+
+/* Long-press button effects */
+.btn-long-press {
+	transition: all 0.1s ease;
+}
+
+.btn-long-press:active {
+	transform: scale(0.95);
+	background-color: #0056b3 !important;
+}
+
+.btn-long-press.fast-forward {
+	background-color: #28a745 !important;
+	border-color: #28a745 !important;
+}
+
 /*****************************
 BACKGROUND COLORS
 *****************************/
