@@ -38,19 +38,19 @@
   "homepage": "https://github.com/kirasiris/armedcode_entertainment#readme",
   "dependencies": {
     "befree-utilities": "^1.0.4",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "he": "^1.2.0",
     "lodash": "^4.17.21",
-    "next": "^15.4.6",
-    "react": "^19.1.1",
+    "next": "^16.0.1",
+    "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.1.1",
+    "react-dom": "^19.2.0",
     "react-share": "^5.2.2",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "eslint": "^9.33.0",
-    "eslint-config-next": "^15.4.6"
+    "eslint": "^9.38.0",
+    "eslint-config-next": "^16.0.1"
   }
 }

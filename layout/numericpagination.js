@@ -14,30 +14,20 @@ const NumericPagination = ({
 	const limit = searchParams.limit || 10;
 	const sort = searchParams.sort || "-createdAt";
 	const decrypt = searchParams.decrypt || "";
-	const random = searchParams.random || "";
-	const email = searchParams.email || "";
-	const posttype = searchParams.postType || "";
 	const resourceId = searchParams.resourceId || "";
 
 	// Initialize router
 	const router = useRouter();
 
-	// If query postType is found
-	const postTypeQuery =
-		posttype !== "" && posttype !== undefined ? `&postType=${posttype}` : "";
 	// If query keyword is found
 	const keywordQuery =
 		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
 	// If query decrypt is found
 	const decryptQuery = decrypt === "true" ? "&decrypt=true" : "";
-	// If query random is found
-	const randomQuery = random === "true" ? "&random=true" : "";
-	// If query email is found
-	const emailQuery = email ? `&email=${email}` : "";
 	// If resourceId is found
 	const resourceQuery = resourceId ? `&resourceId=${resourceId}` : "";
 	// Add them all together
-	const newParams = `&sort=${sort}${postTypeQuery}${keywordQuery}${randomQuery}${decryptQuery}${emailQuery}${resourceQuery}`;
+	const newParams = `&sort=${sort}${keywordQuery}${decryptQuery}${resourceQuery}`;
 	let pageNo;
 	if (page <= Number(totalPages)) {
 		pageNo = page;
