@@ -6,11 +6,8 @@ import ParseHtml from "@/layout/parseHtml";
 import NotVisiblePage from "@/layout/notvisiblepage";
 import ErrorPage from "@/layout/errorpage";
 import Loading from "@/app/about/loading";
-
-async function getSetting(params) {
-	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
-	return res;
-}
+import Head from "@/app/head";
+import { getGlobalData } from "@/helpers/globalData";
 
 async function getPage(params) {
 	const res = await fetchurl(`/global/pages${params}`, "GET", "no-cache");
@@ -22,41 +19,63 @@ const AboutIndex = async ({ params, searchParams }) => {
 	const awtdParams = await params;
 	const awtdSearchParams = await searchParams;
 
-	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
+	const { settings } = await getGlobalData();
 
 	const page = await getPage(`/${process.env.NEXT_PUBLIC_ABOUT_PAGE_ID}`);
 
 	return settings?.data?.maintenance === false ? (
-		<Suspense fallback={<Loading />}>
-			<section className="bg-dark py-5 text-bg-dark">
-				<div className="container">
-					{page.data.status === "published" || awtdParams.isAdmin === "true" ? (
-						<div className="row">
-							<div className="col-lg-12">
-								<article>
-									<div className="mb-3">
-										<h1>{page?.data?.title}</h1>
-										<div className="text-muted fst-italic mb-2">
-											Posted&nbsp;on&nbsp;
-											{formatDateWithoutTime(page?.data?.createdAt)}
-											{page?.data?.user?.username && (
-												<>
-													&nbsp;by&nbsp;
-													{page?.data?.user?.username}
-												</>
-											)}
+		<>
+			<Head
+				title={`${settings?.data?.title} - ${page.data.title}`}
+				description={settings.data.text}
+				favicon={settings.data.favicon}
+				postImage={settings.data.showcase_image}
+				imageWidth="800"
+				imageHeight="450"
+				videoWidth=""
+				videoHeight=""
+				card="summary"
+				robots=""
+				category=""
+				url="/"
+				author={settings.data.author}
+				createdAt={settings.data.createdAt}
+				updatedAt={settings.data.updatedAt}
+				locales=""
+				posType="website"
+			/>
+			<Suspense fallback={<Loading />}>
+				<section className="bg-dark py-5 text-bg-dark">
+					<div className="container">
+						{page.data.status === "published" ||
+						awtdParams.isAdmin === "true" ? (
+							<div className="row">
+								<div className="col-lg-12">
+									<article>
+										<div className="mb-3">
+											<h1>{page?.data?.title}</h1>
+											<div className="text-muted fst-italic mb-2">
+												Posted&nbsp;on&nbsp;
+												{formatDateWithoutTime(page?.data?.createdAt)}
+												{page?.data?.user?.username && (
+													<>
+														&nbsp;by&nbsp;
+														{page?.data?.user?.username}
+													</>
+												)}
+											</div>
 										</div>
-									</div>
-									<ParseHtml text={page?.data?.text} />
-								</article>
+										<ParseHtml text={page?.data?.text} />
+									</article>
+								</div>
 							</div>
-						</div>
-					) : (
-						<NotVisiblePage />
-					)}
-				</div>
-			</section>
-		</Suspense>
+						) : (
+							<NotVisiblePage />
+						)}
+					</div>
+				</section>
+			</Suspense>
+		</>
 	) : (
 		<ErrorPage />
 	);

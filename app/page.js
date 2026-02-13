@@ -9,17 +9,13 @@ import ParseHtml from "@/layout/parseHtml";
 import SongList from "@/components/mainpage/songlist";
 import ChapterList from "@/components/mainpage/chapterlist";
 import AlbumList from "@/components/mainpage/albumlist";
-
-async function getSetting(params) {
-	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
-	return res;
-}
+import { getGlobalData } from "@/helpers/globalData";
 
 async function getShows(params) {
 	const res = await fetchurl(
 		`/global/playlists${params}&status=published&playlistType=video&decrypt=true`,
 		"GET",
-		"default"
+		"default",
 	);
 	return res;
 }
@@ -28,7 +24,7 @@ async function getCdAlbums(params) {
 	const res = await fetchurl(
 		`/global/playlists${params}&status=published&playlistType=audio&decrypt=true`,
 		"GET",
-		"default"
+		"default",
 	);
 	return res;
 }
@@ -37,7 +33,7 @@ async function getChapters(params) {
 	const res = await fetchurl(
 		`/global/videos${params}&status=published&decrypt=true`,
 		"GET",
-		"default"
+		"default",
 	);
 	return res;
 }
@@ -46,7 +42,7 @@ async function getSongs(params) {
 	const res = await fetchurl(
 		`/global/songs${params}&status=published&decrypt=true`,
 		"GET",
-		"default"
+		"default",
 	);
 	return res;
 }
@@ -60,9 +56,10 @@ const Home = async ({ params, searchParams }) => {
 		redirect(`/api/auth/set-token?xAuthToken=${awtdSearchParams?.xAuthToken}`);
 	}
 
-	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
+	const { settings } = await getGlobalData();
+
 	const featuredshows = await getShows(
-		`?page=1&limit=3&sort=-createdAt&featured=true`
+		`?page=1&limit=3&sort=-createdAt&featured=true`,
 	);
 	const shows = await getShows(`?page=1&limit=12&sort=-createdAt`);
 	const albums = await getCdAlbums(`?page=1&limit=12&sort=-createdAt`);

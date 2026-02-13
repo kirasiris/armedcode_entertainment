@@ -8,6 +8,8 @@ import Loading from "@/app/shows/loading";
 import Head from "@/app/head";
 import Player from "@/components/chapter/player";
 import ExportModal from "@/components/global/exportmodal";
+import { getGlobalData } from "@/helpers/globalData";
+import ErrorPage from "@/layout/errorpage";
 
 async function getChapter(params) {
 	const res = await fetchurl(`/global/videos${params}`, "GET", "no-cache");
@@ -24,7 +26,7 @@ async function updateViews(params) {
 	const res = await fetchurl(
 		`/global/videos${params}/addview`,
 		"PUT",
-		"no-cache"
+		"no-cache",
 	);
 	return res;
 }
@@ -33,19 +35,21 @@ const ReadChapter = async ({ params, searchParams }) => {
 	const awtdParams = await params;
 	const awtdSearchParams = await searchParams;
 
+	const { settings } = await getGlobalData();
+
 	await updateViews(`/${awtdParams.id}`);
 
 	const chapter = await getChapter(`/${awtdParams.id}`);
 	const chapters = await getChapters(
-		`?resourceId=${chapter?.data?.resourceId?._id}&sort=createdAt`
+		`?resourceId=${chapter?.data?.resourceId?._id}&sort=createdAt`,
 	);
 
-	return (
+	return settings?.data?.maintenance === false ? (
 		<Suspense fallback={<Loading />}>
 			<Head
-				title={chapter.data.title}
+				title={`${settings?.data?.title} - ${chapter.data.title}`}
 				description={chapter.data.excerpt || chapter.data.text}
-				// favicon=""
+				favicon={settings?.data?.favicon}
 				postImage={chapter.data.files.avatar.location.secure_location}
 				imageWidth=""
 				imageHeight=""
@@ -53,7 +57,7 @@ const ReadChapter = async ({ params, searchParams }) => {
 				videoHeight=""
 				card="summary"
 				robots=""
-				// category={chapter.data.category.title}
+				category=""
 				url={`/shows/chapter/${chapter.data._id}/read`}
 				author={chapter.data.user.name}
 				createdAt={chapter.data.createdAt}
@@ -167,6 +171,8 @@ const ReadChapter = async ({ params, searchParams }) => {
 				</div>
 			</article>
 		</Suspense>
+	) : (
+		<ErrorPage />
 	);
 };
 

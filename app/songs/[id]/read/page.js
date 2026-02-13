@@ -5,10 +5,12 @@ import { formatDateWithoutTime } from "befree-utilities";
 import Image from "next/image";
 import { fetchurl } from "@/helpers/fetchurl";
 import ParseHtml from "@/layout/parseHtml";
-import Loading from "@/app/shows/loading";
+import Loading from "@/app/songs/loading";
 import Head from "@/app/head";
 import ExportModal from "@/components/global/exportmodal";
 import LocalSongPlayer from "@/layout/localsongplayer";
+import { getGlobalData } from "@/helpers/globalData";
+import ErrorPage from "@/layout/errorpage";
 
 async function getSong(params) {
 	const res = await fetchurl(`/global/songs${params}`, "GET", "no-cache");
@@ -25,9 +27,11 @@ const ReadSong = async ({ params, searchParams }) => {
 	const awtdParams = await params;
 	const awtdSearchParams = await searchParams;
 
+	const { settings } = await getGlobalData();
+
 	const song = await getSong(`/${awtdParams.id}`);
 	const songs = await getSongs(
-		`?resourceId=${song?.data?.resourceId?._id}&sort=createdAt`
+		`?resourceId=${song?.data?.resourceId?._id}&sort=createdAt`,
 	);
 
 	const formatDate = (dateString) => {
@@ -38,20 +42,20 @@ const ReadSong = async ({ params, searchParams }) => {
 		});
 	};
 
-	return (
+	return settings?.data?.maintenance === false ? (
 		<Suspense fallback={<Loading />}>
 			<Head
-				title={song.data.title}
+				title={`${settings?.data?.title} - ${song.data.title}`}
 				description={song.data.excerpt || song.data.text}
-				// favicon=""
-				postImage={song.data.files?.avatar?.location.secure_location}
+				favicon={settings?.data?.favicon}
+				postImage={settings?.data?.showcase_image}
 				imageWidth=""
 				imageHeight=""
 				videoWidth=""
 				videoHeight=""
 				card="summary"
 				robots=""
-				// category={song.data.category.title}
+				category=""
 				url={`/songs/${song.data._id}/read`}
 				author={song.data.user.name}
 				createdAt={song.data.createdAt}
@@ -228,6 +232,8 @@ const ReadSong = async ({ params, searchParams }) => {
 				</div>
 			</article>
 		</Suspense>
+	) : (
+		<ErrorPage />
 	);
 };
 

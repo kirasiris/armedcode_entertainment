@@ -1,30 +1,18 @@
 import "@/src/css/bootstrap.css";
 import "@/src/css/global.css";
 import "@/src/css/app.css";
-import Head from "@/app/head";
 import Menu from "@/layout/menu";
 import Footer from "@/layout/footer";
-import { fetchurl } from "@/helpers/fetchurl";
 import { AudioPlayerProvider } from "@/context/audioplayercontext";
 import GlobalAudioPlayer from "@/layout/globalaudioplayer";
-
-async function getSetting(params) {
-	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
-	return res;
-}
+import { getGlobalData } from "@/helpers/globalData";
 
 const RootLayout = async ({ children }) => {
-	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
+	const { settings } = await getGlobalData();
 
 	return (
 		<html lang="en">
-			<head>
-				<Head
-					title={settings?.data?.title}
-					description={settings?.data?.text}
-					favicon={settings?.data?.favicon}
-				/>
-			</head>
+			{/* HEAD SHOULD NEVER BE WITHIN LAYOUT FILE AS IT WILL ALWAYS TRY TO FETCH INFORMATION FROM ITSELF UNLESS CHILD PAGES USE THEIR OWN LAYOUT FILES WHICH ARE NOT BEING USED */}
 			<body>
 				<AudioPlayerProvider>
 					<Menu

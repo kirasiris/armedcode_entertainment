@@ -1,17 +1,14 @@
 import { fetchurl } from "@/helpers/fetchurl";
 import List from "@/components/album/list";
 import ErrorPage from "@/layout/errorpage";
-
-async function getSetting(params) {
-	const res = await fetchurl(`/global/settings/${params}`, "GET", "default");
-	return res;
-}
+import Head from "@/app/head";
+import { getGlobalData } from "@/helpers/globalData";
 
 async function getAlbums(params) {
 	const res = await fetchurl(
 		`/global/playlists${params}&status=published&playlistType=audio`,
 		"GET",
-		"no-cache"
+		"no-cache",
 	);
 	return res;
 }
@@ -24,8 +21,6 @@ async function getCategories(params) {
 const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
 	const keyword = awtdSearchParams.keyword;
-	const settings = await getSetting(process.env.NEXT_PUBLIC_SETTINGS_ID);
-
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
@@ -37,25 +32,50 @@ const AlbumsSearchIndex = async ({ params, searchParams }) => {
 			: "";
 	const decrypt = awtdSearchParams.decrypt === "true" ? "&decrypt=true" : "";
 
+	const { settings } = await getGlobalData();
+
 	const getAlbumsData = getAlbums(
-		`?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}${categoryQuery}${decrypt}`
+		`?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}${categoryQuery}${decrypt}`,
 	);
 
 	const albumcategories = await getCategories(
-		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=album`
+		`?page=${page}&limit=${limit}&sort=${sort}&categoryType=album`,
 	);
 
 	const [albums] = await Promise.all([getAlbumsData]);
 
-	return settings?.data?.maintenance === false ? (
-		<List
-			objects={albums}
-			secondaryobjects={[albumcategories]}
-			searchedKeyword={keyword}
-			searchParams={awtdSearchParams}
-		/>
-	) : (
-		<ErrorPage />
+	return (
+		<>
+			<Head
+				title={`${settings?.data?.title} - Search results of ${awtdSearchParams.keyword}`}
+				description={"Search results..."}
+				favicon={settings?.data?.favicon}
+				postImage=""
+				imageWidth=""
+				imageHeight=""
+				videoWidth=""
+				videoHeight=""
+				card="summary"
+				robots=""
+				category=""
+				url={`/albums/search?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`}
+				author=""
+				createdAt=""
+				updatedAt=""
+				locales=""
+				posType="page"
+			/>
+			{settings?.data?.maintenance === false ? (
+				<List
+					objects={albums}
+					secondaryobjects={[albumcategories]}
+					searchedKeyword={keyword}
+					searchParams={awtdSearchParams}
+				/>
+			) : (
+				<ErrorPage />
+			)}
+		</>
 	);
 };
 
