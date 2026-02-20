@@ -45,7 +45,7 @@ const ChaptersIndex = async ({ params, searchParams }) => {
 				title={`${settings?.data?.title} - Chapters`}
 				description={"Find all the chapters you might like!"}
 				favicon={settings?.data?.favicon}
-				postImage=""
+				postImage={settings.data.showcase_image}
 				imageWidth=""
 				imageHeight=""
 				videoWidth=""

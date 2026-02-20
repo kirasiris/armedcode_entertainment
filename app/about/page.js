@@ -23,7 +23,7 @@ const AboutIndex = async ({ params, searchParams }) => {
 
 	const page = await getPage(`/${process.env.NEXT_PUBLIC_ABOUT_PAGE_ID}`);
 
-	return settings?.data?.maintenance === false ? (
+	return (
 		<>
 			<Head
 				title={`${settings?.data?.title} - ${page.data.title}`}
@@ -37,47 +37,51 @@ const AboutIndex = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				category=""
-				url="/"
+				url="/about"
 				author={settings.data.author}
 				createdAt={settings.data.createdAt}
 				updatedAt={settings.data.updatedAt}
 				locales=""
 				posType="website"
 			/>
-			<Suspense fallback={<Loading />}>
-				<section className="bg-dark py-5 text-bg-dark">
-					<div className="container">
-						{page.data.status === "published" ||
-						awtdParams.isAdmin === "true" ? (
-							<div className="row">
-								<div className="col-lg-12">
-									<article>
-										<div className="mb-3">
-											<h1>{page?.data?.title}</h1>
-											<div className="text-muted fst-italic mb-2">
-												Posted&nbsp;on&nbsp;
-												{formatDateWithoutTime(page?.data?.createdAt)}
-												{page?.data?.user?.username && (
-													<>
-														&nbsp;by&nbsp;
-														{page?.data?.user?.username}
-													</>
-												)}
-											</div>
+			{settings?.data?.maintenance === false ? (
+				<>
+					<Suspense fallback={<Loading />}>
+						<section className="bg-dark py-5 text-bg-dark">
+							<div className="container">
+								{page.data.status === "published" ||
+								awtdParams.isAdmin === "true" ? (
+									<div className="row">
+										<div className="col-lg-12">
+											<article>
+												<div className="mb-3">
+													<h1>{page?.data?.title}</h1>
+													<div className="text-muted fst-italic mb-2">
+														Posted&nbsp;on&nbsp;
+														{formatDateWithoutTime(page?.data?.createdAt)}
+														{page?.data?.user?.username && (
+															<>
+																&nbsp;by&nbsp;
+																{page?.data?.user?.username}
+															</>
+														)}
+													</div>
+												</div>
+												<ParseHtml text={page?.data?.text} />
+											</article>
 										</div>
-										<ParseHtml text={page?.data?.text} />
-									</article>
-								</div>
+									</div>
+								) : (
+									<NotVisiblePage />
+								)}
 							</div>
-						) : (
-							<NotVisiblePage />
-						)}
-					</div>
-				</section>
-			</Suspense>
+						</section>
+					</Suspense>
+				</>
+			) : (
+				<ErrorPage />
+			)}
 		</>
-	) : (
-		<ErrorPage />
 	);
 };
 

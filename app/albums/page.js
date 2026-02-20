@@ -43,7 +43,7 @@ const AlbumsIndex = async ({ params, searchParams }) => {
 				title={`${settings?.data?.title} - Albums`}
 				description={"Find all the albums you might like!"}
 				favicon={settings?.data?.favicon}
-				postImage=""
+				postImage={settings.data.showcase_image}
 				imageWidth=""
 				imageHeight=""
 				videoWidth=""

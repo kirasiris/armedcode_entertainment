@@ -63,7 +63,7 @@ const ShowsIndex = async ({ params, searchParams }) => {
 				title={`${settings?.data?.title} - Shows`}
 				description={"Find all the shows you might like!"}
 				favicon={settings?.data?.favicon}
-				postImage=""
+				postImage={settings.data.showcase_image}
 				imageWidth=""
 				imageHeight=""
 				videoWidth=""
