@@ -66,7 +66,7 @@ const Home = async ({ params, searchParams }) => {
 	const chapters = await getChapters(`?page=1&limit=20&sort=-createdAt`);
 	const songs = await getSongs(`?page=1&limit=20&sort=-createdAt`);
 
-	return settings?.data?.maintenance === false ? (
+	return (
 		<>
 			<Head
 				title={settings.data.title}
@@ -87,137 +87,141 @@ const Home = async ({ params, searchParams }) => {
 				locales=""
 				posType="website"
 			/>
-			{/* FEATURED SHOWS - CAROUSEL */}
-			{featuredshows?.data?.length > 0 && (
-				<FeaturedCarousel objects={featuredshows.data} />
-			)}
-			{/* SHOWS */}
-			<section className="bg-dark text-bg-dark py-5">
-				<div className="container">
-					<div className="row mb-3">
-						<div className="col-lg-12">
-							<div className="d-flex justify-content-between">
-								<h6>Current Shows</h6>
+			{settings?.data?.maintenance === false ? (
+				<>
+					{/* FEATURED SHOWS - CAROUSEL */}
+					{featuredshows?.data?.length > 0 && (
+						<FeaturedCarousel objects={featuredshows.data} />
+					)}
+					{/* SHOWS */}
+					<section className="bg-dark text-bg-dark py-5">
+						<div className="container">
+							<div className="row mb-3">
+								<div className="col-lg-12">
+									<div className="d-flex justify-content-between">
+										<h6>Current Shows</h6>
 
-								<Link
-									href={{
-										pathname: `/shows`,
-										query: {},
-									}}
-									className="btn btn-outline-light btn-sm"
-								>
-									View All Shows
-								</Link>
-							</div>
-						</div>
-					</div>
-					<div className="row g-4">
-						{shows?.data?.map((show, index) => (
-							<article
-								key={show._id}
-								className={`col-xl-3 col-lg-4 col-md-6 col-12 mb-3 ${index}-${show._id}`}
-							>
-								<div className="card bg-black text-bg-dark">
-									<div>
-										<span
-											className="badge position-absolute text-bg-light text-capitalize"
-											style={{
-												top: "5px",
-												left: "5px",
-											}}
-										>
-											{show.onairtype}
-										</span>
-										<span
-											className="badge position-absolute text-bg-light text-capitalize"
-											style={{
-												top: "5px",
-												right: "5px",
-											}}
-										>
-											{show.onairstatus}
-										</span>
-										<Image
-											src={show.files?.avatar.location.secure_location}
-											className="card-img-top"
-											alt="..."
-											width={356}
-											height={192}
-											style={{
-												objectFit: "cover",
-											}}
-										/>
-									</div>
-									<div className="card-body">
-										<span className="badge text-bg-light text-capitalize">
-											{show.category[0].title || "Undefined"}
-										</span>
-										<h5>{show.title}</h5>
-										<ParseHtml text={show.excerpt} classList="card-text" />
-									</div>
-									<div className="card-footer">
 										<Link
 											href={{
-												pathname: `/shows/${show._id}/${show.slug}`,
+												pathname: `/shows`,
 												query: {},
 											}}
-											className="btn btn-dark btn-sm w-100"
+											className="btn btn-outline-light btn-sm"
 										>
-											Continue Watching
+											View All Shows
 										</Link>
 									</div>
 								</div>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-			{/* MUSIC ALBUMS */}
-			<section className="bg-dark text-bg-dark py-5">
-				<div className="container">
-					<div className="row mb-3">
-						<div className="col-lg-12">
-							<div className="d-flex justify-content-between">
-								<h6>Music Albums</h6>
-
-								<Link
-									href={{
-										pathname: `/albums`,
-										query: {},
-									}}
-									className="btn btn-outline-light btn-sm"
-								>
-									View All Albums
-								</Link>
+							</div>
+							<div className="row g-4">
+								{shows?.data?.map((show, index) => (
+									<article
+										key={show._id}
+										className={`col-xl-3 col-lg-4 col-md-6 col-12 mb-3 ${index}-${show._id}`}
+									>
+										<div className="card bg-black text-bg-dark">
+											<div>
+												<span
+													className="badge position-absolute text-bg-light text-capitalize"
+													style={{
+														top: "5px",
+														left: "5px",
+													}}
+												>
+													{show.onairtype}
+												</span>
+												<span
+													className="badge position-absolute text-bg-light text-capitalize"
+													style={{
+														top: "5px",
+														right: "5px",
+													}}
+												>
+													{show.onairstatus}
+												</span>
+												<Image
+													src={show.files?.avatar.location.secure_location}
+													className="card-img-top"
+													alt="..."
+													width={356}
+													height={192}
+													style={{
+														objectFit: "cover",
+													}}
+												/>
+											</div>
+											<div className="card-body">
+												<span className="badge text-bg-light text-capitalize">
+													{show.category[0].title || "Undefined"}
+												</span>
+												<h5>{show.title}</h5>
+												<ParseHtml text={show.excerpt} classList="card-text" />
+											</div>
+											<div className="card-footer">
+												<Link
+													href={{
+														pathname: `/shows/${show._id}/${show.slug}`,
+														query: {},
+													}}
+													className="btn btn-dark btn-sm w-100"
+												>
+													Continue Watching
+												</Link>
+											</div>
+										</div>
+									</article>
+								))}
 							</div>
 						</div>
-					</div>
-					<div className="row g-4">
-						<AlbumList objects={albums} songs={songs?.data} />
-					</div>
-				</div>
-			</section>
-			{/* MOST RECENT EPISODES AND MOST RECENT SONGS */}
-			<section className="bg-dark text-bg-dark py-5">
-				<div className="container">
-					<div className="row mb-3">
-						<div className="col-lg-12">
-							<div className="d-flex justify-content-between"></div>
+					</section>
+					{/* MUSIC ALBUMS */}
+					<section className="bg-dark text-bg-dark py-5">
+						<div className="container">
+							<div className="row mb-3">
+								<div className="col-lg-12">
+									<div className="d-flex justify-content-between">
+										<h6>Music Albums</h6>
+
+										<Link
+											href={{
+												pathname: `/albums`,
+												query: {},
+											}}
+											className="btn btn-outline-light btn-sm"
+										>
+											View All Albums
+										</Link>
+									</div>
+								</div>
+							</div>
+							<div className="row g-4">
+								<AlbumList objects={albums} songs={songs?.data} />
+							</div>
 						</div>
-					</div>
-					<div className="row g-4">
-						<div className="col-lg-6">
-							<ChapterList objects={chapters} />
+					</section>
+					{/* MOST RECENT EPISODES AND MOST RECENT SONGS */}
+					<section className="bg-dark text-bg-dark py-5">
+						<div className="container">
+							<div className="row mb-3">
+								<div className="col-lg-12">
+									<div className="d-flex justify-content-between"></div>
+								</div>
+							</div>
+							<div className="row g-4">
+								<div className="col-lg-6">
+									<ChapterList objects={chapters} />
+								</div>
+								<div className="col-lg-6">
+									<SongList objects={songs} />
+								</div>
+							</div>
 						</div>
-						<div className="col-lg-6">
-							<SongList objects={songs} />
-						</div>
-					</div>
-				</div>
-			</section>
+					</section>
+				</>
+			) : (
+				<ErrorPage />
+			)}
 		</>
-	) : (
-		<ErrorPage />
 	);
 };
 
