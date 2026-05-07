@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import {
 	EmailShareButton,
 	FacebookShareButton,
-	TwitterShareButton,
+	XShareButton,
 	RedditShareButton,
 	WhatsappShareButton,
 	PinterestShareButton,
@@ -40,23 +40,29 @@ const ExportModal = ({
 				<FacebookShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<FacebookIcon size={iconSize} />
 				</FacebookShareButton>
-				<TwitterShareButton
+				<XShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<TwitterIcon size={iconSize} />
-				</TwitterShareButton>
+				</XShareButton>
 				<RedditShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<RedditIcon size={iconSize} />
@@ -64,7 +70,9 @@ const ExportModal = ({
 				<WhatsappShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<WhatsappIcon size={iconSize} />
@@ -72,7 +80,9 @@ const ExportModal = ({
 				<PinterestShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<PinterestIcon size={iconSize} />
@@ -80,7 +90,9 @@ const ExportModal = ({
 				<LinkedinShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<LinkedinIcon size={iconSize} />
@@ -88,7 +100,9 @@ const ExportModal = ({
 				<TelegramShareButton
 					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
 					title={
-						object.title ? `beFree - ` + object.title : `beFree - ` + object._id
+						object.title
+							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
+							: `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object._id
 					}
 				>
 					<TelegramIcon size={iconSize} />
