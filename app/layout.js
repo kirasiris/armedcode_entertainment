@@ -6,6 +6,7 @@ import Footer from "@/layout/footer";
 import { AudioPlayerProvider } from "@/context/audioplayercontext";
 import GlobalAudioPlayer from "@/layout/globalaudioplayer";
 import { getGlobalData } from "@/helpers/globalData";
+import { BootstrapClient } from "@/helpers/bootstrapClient";
 
 const RootLayout = async ({ children }) => {
 	const { settings } = await getGlobalData();
@@ -24,6 +25,7 @@ const RootLayout = async ({ children }) => {
 					<Footer canonical={process.env.NEXT_PUBLIC_WEBSITE_URL} />
 					<GlobalAudioPlayer />
 				</AudioPlayerProvider>
+				<BootstrapClient />
 			</body>
 		</html>
 	);
