@@ -47,7 +47,7 @@ const ChaptersSearchIndex = async ({ params, searchParams }) => {
 	return (
 		<>
 			<Head
-				title={`${settings?.data?.title} - Search results of ${awtdSearchParams.keyword}`}
+				title={`${settings?.data?.title} - Search results of ${keyword}`}
 				description={"Search results..."}
 				favicon={settings?.data?.favicon}
 				postImage={settings.data.showcase_image}

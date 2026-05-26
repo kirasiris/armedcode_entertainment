@@ -30,19 +30,21 @@ const ShowReadSearchIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 10;
 	const sort = awtdSearchParams.sort || "orderingNumber";
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
 
 	const { settings } = await getGlobalData();
 
 	const show = await getShows(`/${awtdParams.id}`);
 
 	const chapters = await getChapters(
-		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}`,
+		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`,
 	);
 
 	return (
 		<>
 			<Head
-				title={`${settings?.data?.title} - Search results of ${awtdSearchParams.keyword}`}
+				title={`${settings?.data?.title} - Search results of ${keyword}`}
 				description={`Search results...`}
 				favicon={settings?.data?.favicon}
 				postImage={show.data.files.avatar.location.secure_location}
@@ -53,7 +55,7 @@ const ShowReadSearchIndex = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				category={show.data.category.title}
-				url={`/shows/${show.data._id}/search?keyword=${awtdSearchParams.keyword}&page=${page}&limit=${limit}&sort=${sort}`}
+				url={`/shows/${show.data._id}/search?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`}
 				author={show.data.user.name}
 				createdAt={show.data.createdAt}
 				updatedAt={show.data.updatedAt}

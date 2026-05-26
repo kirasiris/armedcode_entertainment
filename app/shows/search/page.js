@@ -77,7 +77,7 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 	return (
 		<>
 			<Head
-				title={`${settings?.data?.title} - Search results of ${awtdSearchParams.keyword}`}
+				title={`${settings?.data?.title} - Search results of ${keyword}`}
 				description={"Search results..."}
 				favicon={settings?.data?.favicon}
 				postImage={settings.data.showcase_image}
@@ -88,7 +88,7 @@ const ShowsSearchIndex = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				category=""
-				url={`/shows/search?page=${page}&limit=${limit}&sort=${sort}&keyword=${awtdSearchParams.keyword}`}
+				url={`/shows/search?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`}
 				author=""
 				createdAt=""
 				updatedAt=""

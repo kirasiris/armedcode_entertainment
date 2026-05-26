@@ -20,7 +20,7 @@ async function getCategories(params) {
 
 const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	const awtdSearchParams = await searchParams;
-	const keyword = awtdSearchParams.keyword;
+	const keyword = awtdSearchParams.keyword || "";
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 36;
 	const sort = awtdSearchParams.sort || "-createdAt";
@@ -47,7 +47,7 @@ const AlbumsSearchIndex = async ({ params, searchParams }) => {
 	return (
 		<>
 			<Head
-				title={`${settings?.data?.title} - Search results of ${awtdSearchParams.keyword}`}
+				title={`${settings?.data?.title} - Search results of ${keyword}`}
 				description={"Search results..."}
 				favicon={settings?.data?.favicon}
 				postImage={settings.data.showcase_image}

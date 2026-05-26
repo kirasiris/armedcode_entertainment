@@ -34,7 +34,7 @@ export const setAuthTokenOnServer = async (token) => {
 		myCookies.set("xAuthToken", token, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 			maxAge: new Date(
-				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 			),
 			sameSite:
 				process.env.NEXT_PUBLIC_API_ENV === "production" ? "none" : "lax",
@@ -50,7 +50,7 @@ export const setAPITokenOnServer = async (data = {}) => {
 		const myCookies = await cookies();
 		console.log(
 			"setAPITokenOnServer function was a success",
-			data.secret_token
+			data.secret_token,
 		);
 		myCookies.set("armed_code_sk", data.secret_token, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
@@ -61,7 +61,7 @@ export const setAPITokenOnServer = async (data = {}) => {
 	} else {
 		console.log(
 			"setAPITokenOnServer function was not a success",
-			data.secret_token
+			data.secret_token,
 		);
 		await deleteAPITokenOnServer();
 	}
@@ -78,32 +78,32 @@ export const setUserOnServer = async (object) => {
 			{
 				secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 				maxAge: new Date(
-					Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+					Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 				),
-			}
+			},
 		);
 		myCookies.set("userId", object?._id, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 			maxAge: new Date(
-				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 			),
 		});
 		myCookies.set("username", object?.username, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 			maxAge: new Date(
-				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 			),
 		});
 		myCookies.set("email", object?.email, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 			maxAge: new Date(
-				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 			),
 		});
 		myCookies.set("avatar", object?.files?.avatar?.location?.secure_location, {
 			secure: process.env.NEXT_PUBLIC_API_ENV === "production" ? true : false,
 			maxAge: new Date(
-				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime
+				Date.now() + process.env.NEXT_PUBLIC_JWT_COOKIE_EXPIRE * daysInTime,
 			),
 		});
 	} else {
@@ -140,19 +140,19 @@ export const fetchurl = async (
 	bodyData,
 	signal = undefined || null || {},
 	multipart = false,
-	isRemote = false
+	isRemote = false,
 ) => {
-	const myCookies = await cookies();
-	const token = myCookies.get("xAuthToken");
-	const api_token = myCookies.get("armed_code_sk");
+	// const myCookies = await cookies();
+	// const token = myCookies.get("xAuthToken");
+	// const api_token = myCookies.get("armed_code_sk");
 
 	let requestBody = null;
 
 	let myHeaders = new Headers();
-	myHeaders.append("Authorization", `Bearer ${token?.value}`);
+	// myHeaders.append("Authorization", `Bearer ${token?.value}`);
 	myHeaders.append("Content-Type", "application/json");
-	myHeaders.append("credentials", "include");
-	myHeaders.append("Set-Cookie", `armed_code_sk=${api_token?.value}`);
+	// myHeaders.append("credentials", "include");
+	// myHeaders.append("Set-Cookie", `armed_code_sk=${api_token?.value}`);
 
 	if (
 		bodyData &&
@@ -169,7 +169,7 @@ export const fetchurl = async (
 		const data = new FormData();
 		myHeaders.set(
 			"Content-Type",
-			`multipart/form-data; boundary=${data._boundary}`
+			`multipart/form-data; boundary=${data._boundary}`,
 		);
 	}
 
@@ -187,9 +187,15 @@ export const fetchurl = async (
 			body: method !== "GET" && method !== "HEAD" ? requestBody : null,
 			signal: signal,
 			headers: myHeaders,
-		}
+			redirect: "manual",
+		},
 	)
 		.then(async (res) => {
+			// Might need to delete
+			if (res.status === 303) {
+				const redirectUrl = res.headers.get("Location");
+				return fetch(redirectUrl, { method, headers: myHeaders });
+			}
 			if (!res.ok) {
 				// check if there was JSON
 				const contentType = res.headers.get("Content-Type");

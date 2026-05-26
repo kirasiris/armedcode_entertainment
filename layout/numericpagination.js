@@ -23,7 +23,7 @@ const NumericPagination = ({
 	const page = Number(searchParams.page) || 1;
 	const limit = Number(searchParams.limit) || 10;
 	const sort = searchParams.sort || "-createdAt";
-	const keyword = searchParams.keyword;
+	const keyword = searchParams.keyword || "";
 	const decrypt = searchParams.decrypt || "";
 	const resourceId = searchParams.resourceId || "";
 
