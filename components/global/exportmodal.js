@@ -1,4 +1,5 @@
 "use client";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
 import {
 	EmailShareButton,
@@ -24,21 +25,46 @@ const ExportModal = ({
 	linkToShare = process.env.NEXT_PUBLIC_WEBSITE_URL,
 	iconSize = "45",
 }) => {
+	const [copiedUrl, setCopiedUrl] = useState(false);
+	const [copiedEmbed, setCopiedEmbed] = useState(false);
+	const timeoutRef = useRef(null);
+
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+		};
+	}, []);
+
+	const copyToClipboard = useCallback((text) => {
+		navigator.clipboard.writeText(text);
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
+		setCopiedUrl(true);
+		timeoutRef.current = setTimeout(() => setCopiedUrl(false), 2000);
+	}, []);
+
+	const presentationUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`;
+
 	return (
 		<div className="card bg-black text-bg-dark rounded-0 mb-3">
 			<div className="card-header">Share</div>
 			<div className="card-body bg-dark">
-				<Form.Control
-					readOnly
-					disabled
-					value={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
-				/>
+				<div className="input-group">
+					<Form.Control readOnly disabled value={presentationUrl} />
+					<button
+						className={`btn ${copiedUrl ? "btn-success" : "btn-secondary"}`}
+						onClick={() => copyToClipboard(presentationUrl)}
+					>
+						{copiedUrl ? "Copied!" : "Copy"}
+					</button>
+				</div>
 				<hr />
 				<EmailShareButton subject={object?.title} body={object?.text}>
 					<EmailIcon size={iconSize} />
 				</EmailShareButton>
 				<FacebookShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -48,7 +74,7 @@ const ExportModal = ({
 					<FacebookIcon size={iconSize} />
 				</FacebookShareButton>
 				<XShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -58,7 +84,7 @@ const ExportModal = ({
 					<TwitterIcon size={iconSize} />
 				</XShareButton>
 				<RedditShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -68,7 +94,7 @@ const ExportModal = ({
 					<RedditIcon size={iconSize} />
 				</RedditShareButton>
 				<WhatsappShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -78,7 +104,7 @@ const ExportModal = ({
 					<WhatsappIcon size={iconSize} />
 				</WhatsappShareButton>
 				<PinterestShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -88,7 +114,7 @@ const ExportModal = ({
 					<PinterestIcon size={iconSize} />
 				</PinterestShareButton>
 				<LinkedinShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
@@ -98,7 +124,7 @@ const ExportModal = ({
 					<LinkedinIcon size={iconSize} />
 				</LinkedinShareButton>
 				<TelegramShareButton
-					url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${linkToShare}`}
+					url={presentationUrl}
 					title={
 						object.title
 							? `${process.env.NEXT_PUBLIC_WEBSITE_NAME} - ` + object.title
