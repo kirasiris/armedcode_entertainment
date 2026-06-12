@@ -26,7 +26,6 @@ const ExportModal = ({
 	iconSize = "45",
 }) => {
 	const [copiedUrl, setCopiedUrl] = useState(false);
-	const [copiedEmbed, setCopiedEmbed] = useState(false);
 	const timeoutRef = useRef(null);
 
 	useEffect(() => {
