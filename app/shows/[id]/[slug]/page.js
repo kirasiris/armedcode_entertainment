@@ -35,7 +35,7 @@ const ShowRead = async ({ params, searchParams }) => {
 	const show = await getShows(`/${awtdParams.id}`);
 
 	const chapters = await getChapters(
-		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}`,
+		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&status=published`,
 	);
 
 	return (

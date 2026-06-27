@@ -38,7 +38,7 @@ const ShowReadSearchIndex = async ({ params, searchParams }) => {
 	const show = await getShows(`/${awtdParams.id}`);
 
 	const chapters = await getChapters(
-		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`,
+		`?resourceId=${show?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&status=published${keywordQuery}`,
 	);
 
 	return (

@@ -36,7 +36,7 @@ const AlbumRead = async ({ params, searchParams }) => {
 	const album = await getAlbums(`/${awtdParams.id}`);
 
 	const songs = await getSongs(
-		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}`,
+		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&status=published`,
 	);
 
 	return (

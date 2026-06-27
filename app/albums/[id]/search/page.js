@@ -30,13 +30,15 @@ const AlbumReadSearchIndex = async ({ params, searchParams }) => {
 	const page = awtdSearchParams.page || 1;
 	const limit = awtdSearchParams.limit || 10;
 	const sort = awtdSearchParams.sort || "orderingNumber";
+	const keywordQuery =
+		keyword !== "" && keyword !== undefined ? `&keyword=${keyword}` : "";
 
 	const { settings } = await getGlobalData();
 
 	const album = await getAlbums(`/${awtdParams.id}`);
 
 	const songs = await getSongs(
-		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}`,
+		`?resourceId=${album?.data?._id}&page=${page}&limit=${limit}&sort=${sort}&status=published${keywordQuery}`,
 	);
 
 	return (
@@ -53,7 +55,7 @@ const AlbumReadSearchIndex = async ({ params, searchParams }) => {
 				card="summary"
 				robots=""
 				category={album.data.category.title}
-				url={`/albums/${album.data._id}/search?keyword=${awtdSearchParams.keyword}&page=${page}&limit=${limit}&sort=${sort}`}
+				url={`/albums/${album.data._id}/search?page=${page}&limit=${limit}&sort=${sort}${keywordQuery}`}
 				author={album.data.user.name}
 				createdAt={album.data.createdAt}
 				updatedAt={album.data.updatedAt}
