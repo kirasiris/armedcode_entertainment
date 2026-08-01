@@ -31,7 +31,7 @@ const ReadSong = async ({ params, searchParams }) => {
 
 	const song = await getSong(`/${awtdParams.id}`);
 	const songs = await getSongs(
-		`?resourceId=${song?.data?.resourceId?._id}&sort=createdAt`,
+		`?resourceId=${song?.data?.resourceId?._id}&sort=orderingNumber`,
 	);
 
 	const formatDate = (dateString) => {

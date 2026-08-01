@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const Player = ({ object = {} }) => {
 	const players = {
-		native: object?.data?.players?.native,
+		native: object?.data?.files?.video_url?.location?.secure_location,
 		mega: object?.data?.players?.mega,
 		streamwish: object?.data?.players?.streamwish,
 		yourupload: object?.data?.players?.yourupload,
@@ -12,6 +12,7 @@ const Player = ({ object = {} }) => {
 		maru: object?.data?.players?.maru,
 		netu: object?.data?.players?.netu,
 		stape: object?.data?.players?.stape,
+		cloudinary: object?.data?.players?.cloudinary,
 	};
 
 	const buttons = [

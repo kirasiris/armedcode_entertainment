@@ -41,7 +41,7 @@ const ReadChapter = async ({ params, searchParams }) => {
 
 	const chapter = await getChapter(`/${awtdParams.id}`);
 	const chapters = await getChapters(
-		`?resourceId=${chapter?.data?.resourceId?._id}&sort=createdAt`,
+		`?resourceId=${chapter?.data?.resourceId?._id}&sort=orderingNumber`,
 	);
 
 	return (
@@ -50,7 +50,7 @@ const ReadChapter = async ({ params, searchParams }) => {
 				title={`${settings?.data?.title} - ${chapter.data.title}`}
 				description={chapter.data.excerpt || chapter.data.text}
 				favicon={settings?.data?.favicon}
-				postImage={chapter.data.files.avatar.location.secure_location}
+				postImage={chapter?.data?.files?.avatar?.location?.secure_location}
 				imageWidth=""
 				imageHeight=""
 				videoWidth=""
